@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Joval School of Wine | Learning Platform</title>
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a0a;--bg2:#121212;--bg3:#1a1a1a;--bg4:#242424;--g:#C9A84C;--gl:#e2c97e;--gd:#9a7b2e;--t:#F7F6F0;--t2:#999;--t3:#666;--r:#C62828;--gn:#388E3C;--bl:#42A5F5;--hf:'Cormorant Garamond',serif;--bf:'Inter',sans-serif;--gborder:rgba(201,168,76,.12);--shadow:0 8px 32px rgba(0,0,0,.5)}
+body{background:var(--bg);color:var(--t);font:400 15px/1.65 var(--bf);overflow-x:hidden}
+::selection{background:var(--g);color:#000}
+a{color:var(--g);text-decoration:none;cursor:pointer;transition:.2s}a:hover{color:var(--gl)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:3px}
+
+.login-wrap{position:fixed;inset:0;background:linear-gradient(135deg,rgba(10,10,10,.97),rgba(20,15,5,.97));backdrop-filter:blur(20px);z-index:9999;display:flex;align-items:center;justify-content:center}
+.login-box{background:var(--bg2);border:1px solid var(--gborder);border-radius:20px;padding:48px 40px;width:440px;max-width:92vw;text-align:center;box-shadow:var(--shadow)}
+.login-logo{width:220px;height:auto;object-fit:contain;margin:0 auto 24px;display:block;background:transparent;filter:drop-shadow(0 4px 20px rgba(201,168,76,.15))}
+.login-box h1{font:700 32px var(--hf);color:var(--g);margin-bottom:2px;letter-spacing:1px}
+.login-box .tagline{color:var(--t3);font-size:11px;margin-bottom:28px;letter-spacing:2.5px;text-transform:uppercase}
+
+nav{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(10,10,10,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--gborder);z-index:998;display:flex;align-items:center;padding:0 24px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0}
+.brand img{width:42px;height:42px;object-fit:contain}
+.brand b{font:600 18px var(--hf);color:var(--g);letter-spacing:1px}
+.brand small{font:300 9px var(--bf);color:var(--t3);display:block;letter-spacing:2.5px;text-transform:uppercase}
+.nm{display:flex;gap:2px;flex:1;justify-content:center}
+.nm a{color:var(--t3);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;transition:.25s;position:relative;white-space:nowrap}
+.nm a:hover{color:var(--t);background:rgba(255,255,255,.03)}
+.nm a.on{color:var(--g);background:rgba(201,168,76,.06)}
+.nm a.on::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:16px;height:2px;background:var(--g);border-radius:1px}
+.nr{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.si{background:var(--bg3);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:7px 16px;color:var(--t);font:13px var(--bf);width:170px;transition:.3s;outline:0}
+.si:focus{border-color:var(--g);width:220px;box-shadow:0 0 0 3px rgba(201,168,76,.06)}
+.ni{position:relative;cursor:pointer;font-size:18px;color:var(--t3);transition:.2s;padding:4px}
+.ni:hover{color:var(--g)}
+.ni .nb{position:absolute;top:-2px;right:-4px;background:var(--r);color:#fff;font-size:9px;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;padding:0 4px}
+.ua{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gd),var(--g));display:flex;align-items:center;justify-content:center;font:600 11px var(--bf);color:#000;cursor:pointer;transition:.2s}
+.ua:hover{box-shadow:0 0 0 3px rgba(201,168,76,.25)}
+.nd{position:absolute;top:44px;right:0;width:300px;background:var(--bg2);border:1px solid var(--gborder);border-radius:12px;box-shadow:var(--shadow);z-index:1001;display:none;overflow:hidden}
+.nd.sh{display:block}
+.nd h4{padding:12px 16px;font-size:10px;color:var(--g);text-transform:uppercase;letter-spacing:1.5px;border-bottom:1px solid rgba(255,255,255,.04)}
+.nd p{padding:10px 16px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.02);cursor:pointer;transition:.15s;line-height:1.4;margin:0}
+.nd p:hover{background:var(--bg3)}
+
+.wrap{max-width:1200px;margin:80px auto 0;padding:0 24px 60px;min-height:calc(100vh - 80px)}
+.page{display:none;animation:fu .4s ease}.page.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.h1{font:700 36px var(--hf);color:var(--g);margin-bottom:6px;letter-spacing:.5px}
+.h2{font:600 24px var(--hf);color:var(--g);margin:30px 0 14px}
+.h3{font:600 20px var(--hf);color:var(--g);margin:20px 0 10px}
+.sub{color:var(--t2);font-size:14px;margin-bottom:28px;line-height:1.5}
+.lbl{font-size:11px;color:var(--g);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:6px;display:block}
+
+.card{background:var(--bg2);border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,.03);transition:.3s}
+.card:hover{border-color:var(--gborder);box-shadow:0 4px 20px rgba(0,0,0,.25)}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ga{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.gs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}
+
+.stat{text-align:center;padding:20px}
+.sv2{font:700 36px var(--hf);background:linear-gradient(135deg,var(--g),var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sl2{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:500}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 24px;border-radius:8px;font:600 13px var(--bf);cursor:pointer;border:none;transition:.25s;letter-spacing:.3px}
+.btn-g{background:linear-gradient(135deg,var(--gd),var(--g));color:#000;box-shadow:0 2px 12px rgba(201,168,76,.15)}
+.btn-g:hover{background:linear-gradient(135deg,var(--g),var(--gl));box-shadow:0 4px 20px rgba(201,168,76,.25);transform:translateY(-1px)}
+.btn-o{border:1px solid var(--g);color:var(--g);background:0}.btn-o:hover{background:rgba(201,168,76,.06)}
+.btn-d{background:var(--r);color:#fff}.btn-d:hover{background:#E53935}
+.btn-l{padding:12px 32px;font-size:15px}
+.btn-s{padding:6px 14px;font-size:12px}
+.btn-w{width:100%}
+.btn-ghost{background:0;border:0;color:var(--t2);padding:6px 12px;font:500 13px var(--bf);cursor:pointer;transition:.2s}
+.btn-ghost:hover{color:var(--g)}
+
+.field{margin-bottom:16px}
+.inp,.ta{width:100%;padding:12px 16px;background:var(--bg3);border:1px solid rgba(255,255,255,.05);border-radius:8px;color:var(--t);font:14px var(--bf);transition:.3s;outline:0}
+.inp:focus,.ta:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(201,168,76,.08)}
+.ta{min-height:90px;resize:vertical;line-height:1.5}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.prog{width:100%;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin:8px 0}
+.pf2{height:100%;background:linear-gradient(90deg,var(--gd),var(--g),var(--gl));border-radius:3px;transition:width .5s ease}
+
+.cc-img{height:160px;border-radius:14px 14px 0 0;display:flex;align-items:center;justify-content:center;font-size:44px;position:relative;overflow:hidden}
+.cc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent)}
+.cc-body{padding:18px 20px 20px}
+.cc-price{font:700 18px var(--bf);color:var(--g)}
+.cc-title{font:600 18px var(--hf);color:var(--t);margin:6px 0;line-height:1.3}
+.cc-desc{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:14px}
+.cc-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--t3);margin-bottom:14px}
+.lvl{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.lvl-b{background:rgba(56,142,60,.12);color:#66BB6A}.lvl-i{background:rgba(255,152,0,.12);color:#FFB74D}.lvl-a{background:rgba(171,71,188,.12);color:#CE93D8}
+
+.player{display:grid;grid-template-columns:280px 1fr;gap:20px;min-height:60vh}
+.player-side{background:var(--bg2);border-radius:14px;padding:16px;overflow-y:auto;max-height:72vh;border:1px solid rgba(255,255,255,.03)}
+.mh2{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--g);padding:12px 12px 6px;font-weight:600}
+.li2{padding:10px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:10px;transition:.2s;color:var(--t3)}
+.li2:hover{background:var(--bg3);color:var(--t)}.li2.on{background:rgba(201,168,76,.08);color:var(--g)}.li2.done{color:var(--gn)}
+.vid-box{background:var(--bg3);border-radius:14px;overflow:hidden;margin-bottom:20px;position:relative;padding-top:56.25%}
+.vid-box iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:14px}
+.vid-ph{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;cursor:pointer;background:var(--bg3);border-radius:14px}
+
+.q-opt{padding:14px 18px;background:var(--bg3);border:1px solid rgba(255,255,255,.05);border-radius:10px;cursor:pointer;transition:.25s;margin-bottom:8px;font-size:14px;line-height:1.5}
+.q-opt:hover{border-color:var(--gborder);background:var(--bg4)}
+.q-opt.sel{border-color:var(--g);background:rgba(201,168,76,.06)}
+.q-opt.ok{border-color:var(--gn);background:rgba(56,142,60,.06)}
+.q-opt.no{border-color:var(--r);background:rgba(198,40,40,.06)}
+
+.cert{background:linear-gradient(135deg,var(--bg2),#1a1a1a);border:3px solid var(--g);border-radius:16px;padding:48px;text-align:center;max-width:680px;margin:0 auto 30px;position:relative}
+.cert::before{content:'';position:absolute;inset:8px;border:1px solid rgba(201,168,76,.15);border-radius:12px;pointer-events:none}
+
+.badge-card{text-align:center;padding:18px 12px;border-radius:12px}.badge-card.locked{opacity:.25;filter:grayscale(1)}
+
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:12px;text-align:left;border-bottom:2px solid var(--g);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--g);font-weight:600}
+.tbl td{padding:12px;border-bottom:1px solid rgba(255,255,255,.02);font-size:13px}
+.tbl tr:hover td{background:rgba(255,255,255,.015)}
+.sts{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;text-transform:uppercase}
+.sts-ok{background:rgba(56,142,60,.12);color:#66BB6A}.sts-w{background:rgba(255,152,0,.12);color:#FFB74D}.sts-r{background:rgba(198,40,40,.12);color:#EF5350}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-hd{font-size:11px;font-weight:600;color:var(--t3);text-align:center;padding:8px;text-transform:uppercase}
+.cal-day{padding:10px;text-align:center;border-radius:8px;font-size:14px;cursor:pointer;transition:.2s;position:relative}
+.cal-day:hover{background:var(--bg3)}.cal-day.today{border:1.5px solid var(--g);color:var(--g);font-weight:600}
+.cal-day.has-ev::after{content:'';width:6px;height:6px;background:var(--g);border-radius:50%;position:absolute;bottom:4px;left:50%;transform:translateX(-50%)}
+
+.reply{background:var(--bg3);border-radius:8px;padding:12px;margin:8px 0 0 20px;border-left:2px solid var(--g);font-size:13px;line-height:1.5}
+
+.tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--bg3);border-radius:8px;padding:4px}
+.tab{flex:1;padding:10px;border:none;background:0;color:var(--t3);font:500 12px var(--bf);cursor:pointer;border-radius:6px;transition:.2s;text-transform:uppercase;letter-spacing:.5px;text-align:center}
+.tab.on{background:var(--g);color:#000;font-weight:600}
+
+.cht{position:relative;height:260px;margin-top:12px}
+
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,var(--gd),var(--g));color:#000;padding:12px 28px;border-radius:10px;font:600 14px var(--bf);z-index:9999;box-shadow:0 8px 32px rgba(201,168,76,.25);transition:transform .4s ease;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+footer{text-align:center;padding:40px 24px;border-top:1px solid rgba(201,168,76,.05);margin-top:40px}
+.f-brand{font:600 20px var(--hf);color:var(--g);margin-bottom:6px;letter-spacing:1px}
+.f-addr{font-size:12px;color:var(--t3);line-height:1.6}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:1002;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--gborder);border-radius:16px;padding:32px;width:560px;max-width:92vw;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow)}
+.modal h2{font:600 24px var(--hf);color:var(--g);margin-bottom:18px;letter-spacing:.5px}
+
+@media(max-width:900px){.nm{display:none}.player,.g4,.g3,.g2,.ga,.row{grid-template-columns:1fr}.tabs{flex-wrap:wrap}}
+@media(max-width:600px){.h1{font-size:26px}.wrap{padding:0 16px 40px}}
+@media print{nav,.wrap>:not(#pg-certs),footer{display:none!important}.cert{border-color:#333!important}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login">
+<div class="login-box">
+<img src="logo.png" class="login-logo">
+<h1>Joval School of Wine</h1>
+<div class="tagline">Your Journey in a Glass</div>
+<div class="field"><label class="lbl">Email</label><input class="inp" id="l-email" placeholder="your@email.com"></div>
+<div class="field"><label class="lbl">Password</label><input class="inp" id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+<button class="btn btn-g btn-l btn-w" onclick="doLogin()" style="margin-top:4px">Sign In</button>
+<div id="l-err" style="color:var(--r);font-size:12px;margin-top:10px"></div>
+<p style="font-size:12px;color:var(--t3);margin-top:18px">Don't have an account? <a onclick="showRegister()">Request access</a></p>
+</div>
+</div>
+
+<!-- NAV -->
+<nav id="topnav" style="display:none">
+<div class="brand" onclick="go('dash')">
+<img src="logo.png">
+<div><b>JSOW</b><small>School of Wine</small></div>
+</div>
+<div class="nm" id="navlinks">
+<a class="on" onclick="go('dash')" id="n-dash">Dashboard</a>
+<a onclick="go('cat')" id="n-cat">Courses</a>
+<a onclick="go('journal')" id="n-journal">Tasting Journal</a>
+<a onclick="go('gam')" id="n-gam">Journey</a>
+<a onclick="go('com')" id="n-com">Community</a>
+<a onclick="go('prof')" id="n-prof">Profile</a>
+<a onclick="go('teach')" id="n-teach" style="display:none">Teaching</a>
+<a onclick="go('admin')" id="n-admin" style="display:none">Admin</a>
+</div>
+<div class="nr">
+<input class="si" placeholder="Search courses..." onkeydown="if(event.key==='Enter')doSearch(this.value)">
+<span class="ni" onclick="go('cart')">🛒<span class="nb" id="cc" style="display:none">0</span></span>
+<span class="ni" onclick="toggleN()" style="position:relative">🔔
+<div class="nd" id="ndd">
+<h4>Notifications</h4>
+<p onclick="go('cat')">🎓 WSET Level 1 — June intake now open</p>
+<p onclick="go('cal')">📅 WSET L2 classroom: June 22</p>
+<p onclick="go('gam')">🏅 You earned the First Sip badge!</p>
+<p>🔥 3-day learning streak — keep going!</p>
+</div>
+</span>
+<div class="ua" id="uav" onclick="go('prof')">?</div>
+<button class="btn-ghost" onclick="doLogout()" style="font-size:12px">Logout</button>
+</div>
+</nav>
+
+<div class="wrap" id="mainwrap" style="display:none">
+
+<!-- DASHBOARD -->
+<div id="pg-dash" class="page on">
+<div class="h1" id="wmsg">Welcome back</div>
+<div class="sub">Your wine education journey continues — pick up where you left off</div>
+<div class="g4" style="margin-bottom:28px">
+<div class="card stat"><div style="font-size:24px;margin-bottom:4px">📚</div><div class="sv2" id="d-e">0</div><div class="sl2">Courses</div></div>
+<div class="card stat"><div style="font-size:24px;margin-bottom:4px">✅</div><div class="sv2" id="d-l">0</div><div class="sl2">Lessons Done</div></div>
+<div class="card stat"><div style="font-size:24px;margin-bottom:4px">⭐</div><div class="sv2" id="d-p">0</div><div class="sl2">Points</div></div>
+<div class="card stat"><div style="font-size:24px;margin-bottom:4px">🔥</div><div class="sv2" id="d-s">0</div><div class="sl2">Day Streak</div></div>
+</div>
+<div class="h2">Continue Learning</div><div id="dc"></div>
+<div class="h2">Recent Activity</div><div id="da"></div>
+</div>
+
+<!-- CATALOGUE -->
+<div id="pg-cat" class="page">
+<div class="h1">Course Catalogue</div>
+<div class="sub">From fundamentals to WSET qualifications — find your path in wine</div>
+<div style="display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap" id="filtbar">
+<button class="btn btn-o btn-s" onclick="filt('all',this)">All</button>
+<button class="btn btn-ghost btn-s" onclick="filt('beginner',this)">Beginner</button>
+<button class="btn btn-ghost btn-s" onclick="filt('intermediate',this)">Intermediate</button>
+<button class="btn btn-ghost btn-s" onclick="filt('advanced',this)">Advanced</button>
+<button class="btn btn-ghost btn-s" onclick="filt('free',this)">Free</button>
+</div>
+<div id="cg" class="ga"></div>
+</div>
+
+<!-- PLAYER -->
+<div id="pg-play" class="page"><div class="player"><div class="player-side" id="pls"></div><div id="plm"></div></div></div>
+
+<!-- QUIZ -->
+<div id="pg-quiz" class="page"><div class="h1">Assessment</div><div class="sub">Test your wine knowledge</div><div id="qb" class="card"></div></div>
+
+<!-- TASTING JOURNAL -->
+<div id="pg-journal" class="page">
+<div class="h1">Tasting Journal</div>
+<div class="sub">Record your wine tastings using the WSET Systematic Approach to Tasting (SAT)</div>
+<div class="g2">
+<div class="card">
+<div class="h3" style="margin-top:0">New Tasting Note</div>
+<form onsubmit="saveNote(event)">
+<div class="row"><div class="field"><label class="lbl">Wine Name</label><input class="inp" id="tn-n" required placeholder="e.g. Penfolds Bin 389"></div>
+<div class="field"><label class="lbl">Vintage</label><input class="inp" id="tn-v" type="number" placeholder="2021"></div></div>
+<div class="row"><div class="field"><label class="lbl">Grape Variety</label><input class="inp" id="tn-g" placeholder="Cabernet Sauvignon"></div>
+<div class="field"><label class="lbl">Region / Country</label><input class="inp" id="tn-r" placeholder="Barossa Valley, SA"></div></div>
+<div class="field"><label class="lbl">👁️ Appearance</label><textarea class="ta" id="tn-a" placeholder="Clarity, intensity, colour..."></textarea></div>
+<div class="field"><label class="lbl">👃 Nose</label><textarea class="ta" id="tn-no" placeholder="Condition, intensity, aroma characteristics..."></textarea></div>
+<div class="field"><label class="lbl">👅 Palate</label><textarea class="ta" id="tn-p" placeholder="Sweetness, acidity, tannin, body, flavour, finish..."></textarea></div>
+<div class="field"><label class="lbl">📋 Conclusion</label><textarea class="ta" id="tn-c" placeholder="Quality level, readiness, price point..."></textarea></div>
+<div class="field"><label class="lbl">Rating</label><select class="inp" id="tn-rt"><option value="5">★★★★★ Outstanding</option><option value="4" selected>★★★★☆ Very Good</option><option value="3">★★★☆☆ Good</option><option value="2">★★☆☆☆ Acceptable</option><option value="1">★☆☆☆☆ Poor/Faulty</option></select></div>
+<button type="submit" class="btn btn-g btn-l btn-w">Save Tasting Note</button>
+</form>
+</div>
+<div><div class="h3" style="margin-top:0">Saved Notes</div><div id="jnl"></div></div>
+</div>
+</div>
+
+<!-- CERTIFICATES -->
+<div id="pg-certs" class="page"><div class="h1">My Certificates</div><div class="sub">Your earned credentials and qualifications</div><div id="clist"></div></div>
+
+<!-- GAMIFICATION -->
+<div id="pg-gam" class="page">
+<div class="h1">Your Wine Journey</div>
+<div class="sub">Track progress, earn badges, and climb the leaderboard</div>
+<div class="g3" style="margin-bottom:26px">
+<div class="card stat"><div class="sv2" id="g-p">0</div><div class="sl2">Total Points</div></div>
+<div class="card stat"><div class="sv2" id="g-b">0</div><div class="sl2">Badges Earned</div></div>
+<div class="card stat"><div class="sv2" id="g-s">0</div><div class="sl2">Day Streak</div></div>
+</div>
+<div class="h2">Journey Map</div><div id="jmap" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:24px"></div>
+<div class="h2">Badges</div><div id="blist" class="gs"></div>
+<div class="h2">Leaderboard</div><div class="card"><table class="tbl"><thead><tr><th>#</th><th>Learner</th><th>Points</th><th>Badges</th></tr></thead><tbody id="lbb"></tbody></table></div>
+</div>
+
+<!-- CART -->
+<div id="pg-cart" class="page">
+<div class="h1">Shopping Cart</div>
+<div class="sub">Review your selections and checkout</div>
+<div class="g2">
+<div id="citms"></div>
+<div class="card" style="align-self:start">
+<div class="h3" style="margin-top:0">Order Summary</div>
+<div class="field"><label class="lbl">Coupon Code</label><div style="display:flex;gap:8px"><input class="inp" id="cpn" placeholder="e.g. JSOW10" style="flex:1"><button class="btn btn-o btn-s" onclick="applyCpn()">Apply</button></div></div>
+<div id="cmsg" style="font-size:12px;margin-bottom:10px"></div>
+<div id="csum"></div>
+<button class="btn btn-g btn-l btn-w" style="margin-top:14px" onclick="checkout()">Proceed to Checkout</button>
+</div>
+</div>
+</div>
+
+<!-- COMMUNITY -->
+<div id="pg-com" class="page">
+<div class="h1">Community</div>
+<div class="sub">Discuss, share tasting notes, and learn from fellow wine enthusiasts</div>
+<div class="card" style="margin-bottom:20px">
+<div class="field"><input class="inp" id="ptt" placeholder="Start a discussion..."></div>
+<div class="field"><textarea class="ta" id="ppb" placeholder="Share your thoughts, questions, or discoveries..."></textarea></div>
+<button class="btn btn-g" onclick="postTh()">Post Discussion</button>
+</div>
+<div id="cth"></div>
+</div>
+
+<!-- PROFILE -->
+<div id="pg-prof" class="page">
+<div class="h1">My Profile</div>
+<div class="sub">Manage your account and view learning statistics</div>
+<div class="g2" style="margin-bottom:24px">
+<div class="card">
+<div class="h3" style="margin-top:0">Personal Information</div>
+<div class="field"><label class="lbl">Full Name</label><input class="inp" id="pn" value=""></div>
+<div class="field"><label class="lbl">Email</label><input class="inp" id="pe" value="" readonly style="opacity:.6"></div>
+<div class="field"><label class="lbl">WSET Level</label><select class="inp" id="pwset"><option>Not Started</option><option>Level 1</option><option>Level 2 (In Progress)</option><option>Level 3</option><option>Diploma</option></select></div>
+<div class="field"><label class="lbl">Wine Interest</label><select class="inp"><option>General Enthusiast</option><option>Hospitality Professional</option><option>Wine Trade</option><option>Sommelier Track</option><option>Educator</option></select></div>
+<button class="btn btn-g" onclick="toast('Profile saved!')">Save Changes</button>
+</div>
+<div class="card">
+<div class="h3" style="margin-top:0">Learning Statistics</div>
+<div id="pfs"></div>
+</div>
+</div>
+<div class="h2">Enrolled Courses</div><div id="pfc" class="ga"></div>
+</div>
+
+<!-- TEACHER PANEL -->
+<div id="pg-teach" class="page">
+<div class="h1">Teacher Dashboard</div>
+<div class="sub" id="teach-sub">Manage your courses, students, and assessments</div>
+<div class="g4" style="margin-bottom:24px" id="teach-stats"></div>
+<div class="tabs" id="teach-tabs">
+<button class="tab on" onclick="tTab('roster',this)">Student Roster</button>
+<button class="tab" onclick="tTab('assess',this)">Assessments</button>
+<button class="tab" onclick="tTab('mycourses',this)">My Courses</button>
+<button class="tab" onclick="tTab('builder',this)">Course Builder</button>
+<button class="tab" onclick="tTab('quizedit',this)">Quiz Editor</button>
+<button class="tab" onclick="tTab('tnotes',this)">Tasting Reviews</button>
+<button class="tab" onclick="tTab('messages',this)">Messages</button>
+</div>
+<div id="tc"></div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="pg-admin" class="page">
+<div class="h1">Administration</div>
+<div class="sub">Platform analytics, user management, and system configuration</div>
+<div class="tabs" id="admin-tabs">
+<button class="tab on" onclick="aTab('analytics',this)">Analytics</button>
+<button class="tab" onclick="aTab('users',this)">Users</button>
+<button class="tab" onclick="aTab('courses',this)">Courses</button>
+<button class="tab" onclick="aTab('promos',this)">Promotions</button>
+<button class="tab" onclick="aTab('events',this)">Events</button>
+<button class="tab" onclick="aTab('settings',this)">Settings</button>
+</div>
+<div id="ac"></div>
+</div>
+
+<!-- CALENDAR -->
+<div id="pg-cal" class="page">
+<div class="h1">Events & Schedule</div>
+<div class="sub">Tastings, masterclasses, classroom sessions, and exam dates</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+<button class="btn btn-o btn-s" onclick="chMo(-1)">← Prev</button>
+<div id="calt" style="font:600 22px var(--hf);color:var(--g)"></div>
+<button class="btn btn-o btn-s" onclick="chMo(1)">Next →</button>
+</div>
+<div class="cal-grid"><div class="cal-hd">Mon</div><div class="cal-hd">Tue</div><div class="cal-hd">Wed</div><div class="cal-hd">Thu</div><div class="cal-hd">Fri</div><div class="cal-hd">Sat</div><div class="cal-hd">Sun</div></div>
+<div class="cal-grid" id="cdays"></div>
+</div>
+<div id="cev" style="margin-top:20px"></div>
+</div>
+
+<!-- SEARCH -->
+<div id="pg-search" class="page"><div class="h1">Search Results</div><div class="sub" id="sq"></div><div id="sres"></div></div>
+
+<!-- CHECKOUT SUCCESS -->
+<div id="pg-ok" class="page">
+<div style="text-align:center;padding:60px 0">
+<div style="font-size:56px;margin-bottom:14px">🎉</div>
+<div class="h1" style="margin-bottom:8px">Enrollment Confirmed!</div>
+<div class="sub">Welcome aboard — your wine journey continues</div>
+<button class="btn btn-g btn-l" onclick="go('dash')">Go to Dashboard</button>
+</div>
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+<div class="modal" id="modal-body"></div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+<img src="logo.png" alt="JSOW" style="width:100px;height:auto;margin:0 auto 14px;object-fit:contain;display:block">
+<div class="f-brand">Joval School of Wine</div>
+<div class="f-addr">
+Level 3/436 Johnston Street, Abbotsford VIC 3067<br>
+jsow@joval.com.au | +61 3 8413 8310<br>
+<span style="margin-top:6px;display:inline-block">© 2024–2026 Joval Wines. Your Journey in a Glass.</span>
+</div>
+<div style="margin-top:14px"><a onclick="go('admin')" style="font-size:10px;color:var(--t3);opacity:.3">Administration</a></div>
+</footer>
+<script>
+// ═══════════════════════════════════════════
+// JSOW LMS — Production Build v3 (patched)
+// ═══════════════════════════════════════════
+
+const USERS=[
+{email:'student@jsow.com.au',pass:'student123',role:'student',name:'Wine Enthusiast',initials:'WE'},
+{email:'hilary@jsow.com.au',pass:'teacher123',role:'teacher',name:'Hilary Fordham',initials:'HF'},
+{email:'admin@jsow.com.au',pass:'admin123',role:'admin',name:'JSOW Admin',initials:'JA'}
+];
+
+const C=[
+{id:1,t:"Wine Fundamentals",p:0,pd:"Free",lv:"beginner",r:4.7,st:1240,du:"2 hours",ic:"🍇",gr:"linear-gradient(135deg,#6B2FA0,#C2185B)",d:"A free introduction for anyone curious about wine — the perfect first step.",m:[
+{n:"Introduction to Wine",l:[
+{n:"What is Wine?",v:"sz7gPNjMlWY",c:"Wine is an alcoholic beverage produced from the fermented juice of grapes. Yeast converts the natural grape sugars (glucose and fructose) into ethyl alcohol and carbon dioxide. While other fruits can make 'wine', true wine comes from Vitis vinifera — the European grape species responsible for virtually all fine wine production. The character of any wine depends on three things: the grape variety, the environment where it grows (climate, soil, topography), and the decisions made by the winemaker."},
+{n:"The Five Main Wine Styles",v:"RHTyBjgKKC0",c:"<strong>Still wines</strong> (red, white, rosé) have no significant carbonation. Reds get colour from skin contact during fermentation. Whites are pressed before fermentation. Rosé has brief skin contact. <strong>Sparkling wines</strong> contain dissolved CO₂ from a secondary fermentation — Champagne, Prosecco, Cava. <strong>Fortified wines</strong> have grape spirit added — Port (sweet, spirit added during fermentation) and Sherry (dry, spirit added after fermentation). Understanding these five categories is the foundation of all wine knowledge."}]},
+{n:"How to Taste Wine",l:[
+{n:"The WSET SAT Method",v:"dxQmOR_eLmk",c:"The <strong>Systematic Approach to Tasting (SAT)</strong> is the WSET's structured method for evaluating wine objectively. It follows three stages:<br><br><strong>1. Appearance:</strong> Assess clarity (clear or hazy?), intensity (pale, medium, deep), and colour (lemon, gold, amber for whites; purple, ruby, garnet, tawny for reds). Colour gives clues to age and grape variety.<br><br><strong>2. Nose:</strong> Assess condition (clean or faulty?), intensity (light, medium, pronounced), and aroma characteristics. Primary aromas come from the grape (fruit, floral, herbal). Secondary aromas come from winemaking (yeast, butter, vanilla). Tertiary aromas come from ageing (leather, toast, dried fruit).<br><br><strong>3. Palate:</strong> Assess sweetness (dry to sweet), acidity (low to high), tannin in reds (low to high), body (light to full), flavour intensity, flavour characteristics, and finish (short, medium, long). The SAT ensures consistency and objectivity in your tasting assessments."},
+{n:"Common Wine Faults",v:"",c:"Being able to identify faults is essential. <strong>Cork taint (TCA)</strong> is the most common — affecting 3–5% of bottles sealed with natural cork. It produces a musty, wet cardboard smell that strips the wine of fruit character. <strong>Oxidation</strong> occurs when wine has excessive exposure to air — whites turn brown, flavours become flat and 'bruised apple'. <strong>Volatile acidity (VA)</strong> produces vinegar-like aromas — a small amount adds complexity, but too much is a fault. <strong>Reduction</strong> produces rotten egg or struck match aromas — often fixed by decanting. <strong>Brettanomyces</strong> produces barnyard, Band-Aid aromas — controversial, as some consider low levels acceptable."}]}
+]},
+{id:2,t:"WSET Level 1 Award in Wines",p:395,pd:"$395",lv:"beginner",r:4.8,st:856,du:"8 hours",ic:"🏅",gr:"linear-gradient(135deg,#1B5E20,#00897B)",d:"The globally recognised entry-level qualification — 30 MCQ exam, 70% pass mark.",m:[
+{n:"LO1: Grape Growing & Winemaking",l:[
+{n:"How Grapes Grow",v:"CBE-IQUKNKA",c:"Grapevines (Vitis vinifera) follow an annual cycle: <strong>dormancy</strong> (winter — vines rest, pruning occurs), <strong>budburst</strong> (spring — new shoots emerge), <strong>flowering</strong> (early summer — flowers develop into grape berries), <strong>véraison</strong> (mid-summer — grapes change colour and begin ripening), and <strong>harvest</strong> (late summer/autumn — grapes picked at optimum ripeness). The key environmental factors are: <strong>climate</strong> (cool climates = higher acidity, lower sugar; warm climates = lower acidity, higher sugar/alcohol), <strong>sunlight</strong> (needed for photosynthesis and ripening), <strong>water</strong> (some needed, but too much dilutes flavour), and <strong>soil</strong> (well-drained soils stress the vine, concentrating flavours). The winemaker's most important decision is <strong>when to harvest</strong> — this determines the balance between sugar (which becomes alcohol) and acidity."},
+{n:"White Winemaking",v:"1rab_a_Few4",c:"White wines are made by pressing grapes <strong>before</strong> fermentation — the juice ferments without skins, keeping the wine pale. Key steps: <strong>1. Crushing & pressing</strong> — grapes gently crushed, juice separated from skins. <strong>2. Fermentation</strong> — yeast converts sugar to alcohol. Cool fermentation (12–16°C) in stainless steel preserves fresh fruit aromas. Warm fermentation or oak barrels produce richer, creamier styles. <strong>3. Malolactic conversion (MLF)</strong> — optional; converts sharp malic acid to softer lactic acid, adding creaminess (common in Chardonnay). <strong>4. Ageing</strong> — stainless steel keeps wine fresh and fruity; oak ageing adds vanilla, toast, and spice flavours. <strong>5. Bottling</strong> — wine filtered, stabilised, and bottled."},
+{n:"Red & Rosé Winemaking",v:"1rab_a_Few4",c:"Red wines are made by fermenting the juice <strong>with</strong> the skins — this extracts colour (anthocyanins), tannin, and flavour. Key differences from white winemaking: <strong>Maceration</strong> — skins remain in contact with juice during and sometimes after fermentation. Longer maceration = more colour and tannin. <strong>Temperature</strong> — reds ferment warmer (20–30°C) to extract colour and tannin. <strong>Pressing</strong> — happens after fermentation (opposite of whites). <strong>MLF</strong> — almost always done for reds to soften acidity. <strong>Oak ageing</strong> — common for premium reds; adds complexity and softens tannins.<br><br><strong>Rosé</strong> is made from red grapes with <strong>brief skin contact</strong> (2–24 hours) — just enough for pink colour, then pressed off and fermented like a white wine."},
+{n:"Sparkling & Fortified Winemaking",v:"",c:"<strong>Sparkling wines</strong> get their bubbles from a secondary fermentation that traps CO₂. <strong>Traditional Method</strong> (Champagne, Crémant, Cava): secondary fermentation happens inside the bottle, followed by lees ageing. Produces fine, persistent bubbles and biscuity complexity. <strong>Tank/Charmat Method</strong> (Prosecco, Asti): secondary fermentation in large pressurised tanks. Produces fresh, fruity, simpler sparkling wines.<br><br><strong>Fortified wines</strong> have grape spirit added to increase alcohol. <strong>Port</strong>: spirit added <em>during</em> fermentation — kills yeast, leaving residual sugar (sweet). <strong>Sherry</strong>: spirit added <em>after</em> fermentation — wine is dry. Fino Sherry ages under flor yeast (light, dry, tangy). Oloroso ages oxidatively (rich, nutty, dark)."}]},
+{n:"LO2: Grape Varieties & Wine Styles",l:[
+{n:"Principal White Grapes",v:"",c:"<strong>Chardonnay</strong> — the world's most planted white grape. Hugely versatile: cool-climate Chablis (lean, citrus, mineral, unoaked) vs warm-climate Australian Chardonnay (rich, tropical, oaked with butter and vanilla). Its neutral character makes it a canvas for winemaking decisions.<br><br><strong>Sauvignon Blanc</strong> — aromatic, high acidity. Marlborough NZ: pungent gooseberry, passion fruit, grass. Loire Valley (Sancerre/Pouilly-Fumé): more restrained, mineral, citrus. Almost always unoaked and dry.<br><br><strong>Pinot Grigio/Gris</strong> — light, dry, and neutral in northern Italy (Delle Venezie). Richer, more honeyed in Alsace (Pinot Gris). Easy-drinking, food-friendly.<br><br><strong>Riesling</strong> — highly aromatic with piercing acidity. Ranges from bone-dry to intensely sweet. Germany (Mosel, Rheingau): light-bodied, floral, often off-dry. Alsace: drier, more full-bodied. Clare Valley: lime and toast. Ages exceptionally well."},
+{n:"Principal Red Grapes",v:"",c:"<strong>Cabernet Sauvignon</strong> — deep colour, high tannin, full body. Blackcurrant, cedar, dark chocolate. Bordeaux Left Bank (Médoc, Graves): blended with Merlot, structured and age-worthy. Napa Valley: ripe, powerful, often oaky. Coonawarra: eucalyptus and mint notes on terra rossa soil.<br><br><strong>Merlot</strong> — medium tannin, softer and plummier than Cabernet. Plum, red cherry, chocolate. Bordeaux Right Bank (Saint-Émilion, Pomerol): clay/limestone soils produce rich, velvety wines.<br><br><strong>Pinot Noir</strong> — thin-skinned, light colour, low tannin, high acidity. Red cherry, strawberry, earthy, mushroom. Burgundy is the benchmark. Also excellent in Yarra Valley, Central Otago, Willamette Valley.<br><br><strong>Syrah/Shiraz</strong> — same grape, two names. Northern Rhône (Hermitage): peppery, floral, medium-bodied. Barossa Valley: bold, rich, dark fruit, chocolate, high alcohol."},
+{n:"Other Wine Styles",v:"",c:"<strong>Rosé</strong>: made from red grapes with brief skin contact. Provence is the benchmark — pale pink, dry, delicate.<br><br><strong>Sweet wines</strong>: made by concentrating sugars through late harvest, noble rot (Botrytis cinerea — Sauternes, Tokaji), drying grapes (Amarone), or freezing (Icewine/Eiswein). Always pair wine sweeter than the food.<br><br><strong>Sparkling wines</strong>: Champagne (Traditional Method, France), Prosecco (Tank Method, Italy), Cava (Traditional Method, Spain), English Sparkling (rapidly rising quality)."}]},
+{n:"LO3: Storage, Service & Food Pairing",l:[
+{n:"Storing & Serving Wine",v:"",c:"<strong>Storage:</strong> Store horizontally (keeps cork moist) at 10–15°C, away from light, vibration, and strong odours. Consistent temperature is more important than exact temperature.<br><br><strong>Serving temperatures:</strong><br>• Sparkling and light whites: <strong>6–10°C</strong><br>• Full-bodied whites and light reds: <strong>10–15°C</strong><br>• Full-bodied reds: <strong>15–18°C</strong><br><br>Too cold mutes aromas. Too warm makes alcohol harsh. Temperature is the single most impactful service decision.<br><br><strong>Opening:</strong> Use a waiter's friend corkscrew. Cut foil below the lip. Insert worm centrally. Lever in two stages. Wipe the rim. Pour a small taste for the host. For sparkling: remove cage, grip cork firmly, twist the bottle (not the cork), control the release."},
+{n:"Food & Wine Pairing Principles",v:"",c:"<strong>1. Match weight:</strong> Light dishes need light wines; rich dishes need full-bodied wines.<br><br><strong>2. Acidity cuts fat:</strong> High-acid wines refresh the palate after rich, fatty foods. Champagne with fried chicken works brilliantly.<br><br><strong>3. Tannin + protein:</strong> Tannin is softened by protein and salt. Cabernet Sauvignon with steak is a classic.<br><br><strong>4. Wine must be sweeter than food:</strong> Sweet food makes dry wine taste bitter.<br><br><strong>5. Umami warning:</strong> Umami intensifies bitterness and tannin. Pair with fruity, low-tannin wines.<br><br><strong>Classic matches:</strong> Sauvignon Blanc + goat cheese. Champagne + oysters. Riesling + Thai curry. Cabernet + grilled lamb. Port + Stilton."}]}
+]},
+{id:3,t:"WSET Level 2 Award in Wines",p:895,pd:"$895",lv:"intermediate",r:4.9,st:623,du:"28 hours",ic:"🎓",gr:"linear-gradient(135deg,#1A237E,#4A148C)",d:"Explore 30+ grape varieties and key wine regions worldwide — 50 MCQ exam, 55% pass.",m:[
+{n:"LO1: Vineyard Influences",l:[
+{n:"Climate, Weather & Location",v:"",c:"The vineyard environment is the most important influence on wine style and quality.<br><br><strong>Cool climate</strong> (Burgundy, Mosel, Champagne, Tasmania): grapes struggle to ripen fully — wines have high acidity, lower alcohol, lighter body. Green/citrus fruit characters.<br><br><strong>Warm climate</strong> (Barossa, Napa, Southern Rhône, Mendoza): grapes ripen easily — wines have lower acidity, higher alcohol, fuller body. Ripe/tropical fruit characters.<br><br><strong>Factors affecting climate:</strong><br>• <strong>Latitude</strong>: closer to equator = warmer<br>• <strong>Altitude</strong>: higher = cooler (important in Mendoza, Priorat)<br>• <strong>Ocean currents</strong>: cool Humboldt Current moderates Chile's coast<br>• <strong>Mountains</strong>: can block rain (rain shadow) or cold winds<br>• <strong>Lakes/rivers</strong>: moderate temperature extremes (Mosel, Finger Lakes)<br>• <strong>Aspect</strong>: south-facing slopes (Northern Hemisphere) get more sun"},
+{n:"Grape Growing Options",v:"",c:"Vineyard management decisions directly affect grape quality:<br><br><strong>Training & pruning:</strong> Controls vine vigour and yield. Low-trained bush vines (gobelet) suit hot, dry climates. High-trained trellised vines suit cooler, wetter climates.<br><br><strong>Yield:</strong> Lower yields = more concentrated flavours (but less wine). Premium producers limit yields deliberately.<br><br><strong>Irrigation:</strong> Banned in much of Europe but essential in Australia, Chile, Argentina.<br><br><strong>Harvest timing:</strong> The most critical decision. Early harvest = high acid, lower sugar. Late harvest = lower acid, higher sugar.<br><br><strong>Organic/biodynamic:</strong> No synthetic pesticides or fertilisers. Growing rapidly in popularity."}]},
+{n:"LO2: Winemaking & Maturation",l:[
+{n:"Fermentation & Winemaking Choices",v:"1rab_a_Few4",c:"Every winemaking decision affects the final wine:<br><br><strong>Fermentation temperature:</strong><br>• Cool (12–16°C): preserves delicate fruit aromas (used for aromatic whites)<br>• Warm (20–30°C): extracts more colour, tannin, and body (used for reds)<br><br><strong>Fermentation vessel:</strong><br>• Stainless steel: inert, preserves fresh fruit character<br>• Oak barrels: adds vanilla, toast, spice, clove; allows micro-oxygenation<br>• Concrete/clay: gaining popularity for texture without oak flavour<br><br><strong>Malolactic conversion (MLF):</strong> Converts sharp malic acid to softer lactic acid. Adds creaminess and butterscotch notes. Almost universal for reds. Optional for whites.<br><br><strong>Lees ageing:</strong> Ageing wine on dead yeast cells adds biscuity, creamy texture. Key in Champagne and Muscadet (sur lie)."},
+{n:"Oak & Bottle Ageing",v:"",c:"<strong>Oak ageing:</strong> One of the most significant flavour-adding steps.<br>• <strong>New oak</strong> imparts strong flavours: vanilla, toast, coconut, clove, smoke<br>• <strong>Old/used oak</strong> adds less flavour — mainly used for gentle oxidation and texture<br>• <strong>French oak</strong>: subtle, fine-grained, spice and toast<br>• <strong>American oak</strong>: more assertive, coconut and dill<br><br><strong>Bottle ageing:</strong> Over time, primary fruit aromas evolve into tertiary characteristics:<br>• White wines: fresh fruit → honey, toast, petrol (Riesling), nuts<br>• Red wines: fresh fruit → leather, earth, mushroom, tobacco, dried fruit<br>• Tannins soften, colour changes (reds lighten, whites deepen)"}]},
+{n:"LO3: Principal White Grapes",l:[
+{n:"Chardonnay — The Chameleon Grape",v:"",c:"Chardonnay is the world's most popular and versatile white grape.<br><br><strong>Cool climate — Chablis (Burgundy):</strong> Unoaked, high acidity, green apple, lemon, mineral, steely. Grown on Kimmeridgian limestone.<br><br><strong>Moderate climate — Côte de Beaune (Burgundy):</strong> Meursault and Puligny-Montrachet. Oak-aged, MLF, full body. Citrus, stone fruit, butter, hazelnut, toast.<br><br><strong>Warm climate — Australia (Margaret River, Adelaide Hills, Yarra Valley):</strong> Ripe tropical fruit, often oaked. Modern trend toward leaner styles. Margaret River Chardonnay rivals top Burgundy.<br><br><strong>Key WSET concept:</strong> Chardonnay's style is primarily determined by climate and winemaking, not by the grape's inherent character."},
+{n:"Sauvignon Blanc — The Aromatic Star",v:"",c:"Sauvignon Blanc is intensely aromatic with naturally high acidity. Almost always unoaked and dry.<br><br><strong>Marlborough, New Zealand:</strong> The global benchmark. Pungent gooseberry, passion fruit, green capsicum, cut grass. Very high acidity, medium body.<br><br><strong>Loire Valley (Sancerre & Pouilly-Fumé):</strong> More restrained. Citrus, green apple, mineral, flinty.<br><br><strong>Bordeaux:</strong> Often blended with Sémillon. Dry white Bordeaux can be oak-aged. Sweet Bordeaux (Sauternes): noble rot, intensely sweet, honeyed.<br><br><strong>Other regions:</strong> South Africa (Elgin, Constantia), Chile (Casablanca, Leyda)."},
+{n:"Riesling — The Noble Grape",v:"",c:"Riesling is considered one of the world's greatest grape varieties. High acidity always, highly aromatic, enormous range from bone-dry to intensely sweet.<br><br><strong>Germany — Mosel:</strong> Light body, low alcohol (7–9%), delicate floral, citrus. Often off-dry. Steep slate slopes. German terms: Trocken (dry), Kabinett (light), Spätlese (riper), Auslese (sweet), Beerenauslese/TBA (intensely sweet).<br><br><strong>Alsace, France:</strong> Drier and fuller-bodied. Lime, peach, mineral. Grand Cru vineyards.<br><br><strong>Australia — Clare Valley & Eden Valley:</strong> Bone-dry, high acid, lime and toast. Classic toasty/petrol character with age. Screwcap pioneers."},
+{n:"Pinot Grigio/Gris & Other Whites",v:"",c:"<strong>Pinot Grigio (Italy):</strong> Light body, dry, neutral, crisp. Lemon, green apple, almond.<br><br><strong>Pinot Gris (Alsace):</strong> Fuller body, richer, more aromatic. Stone fruit, honey, spice. Same grape, dramatically different style.<br><br><strong>Other important whites:</strong><br>• <strong>Gewürztraminer</strong> (Alsace): exotic lychee, rose petal, ginger. Full body, low acid<br>• <strong>Viognier</strong> (Northern Rhône — Condrieu): peach, apricot, floral<br>• <strong>Chenin Blanc</strong> (Loire — Vouvray; South Africa): versatile — dry to sweet, sparkling to still<br>• <strong>Sémillon</strong> (Hunter Valley): lean and lime-like young, develops toast with age<br>• <strong>Albariño</strong> (Rías Baixas, Spain): citrus, peach, saline"}]},
+{n:"LO3: Principal Red Grapes",l:[
+{n:"Cabernet Sauvignon & Merlot",v:"",c:"<strong>Cabernet Sauvignon</strong> — the world's most planted red grape. Deep colour, high tannin, full body. Blackcurrant, cedar, dark cherry, tobacco.<br><br>• <strong>Bordeaux Left Bank (Médoc):</strong> Gravel soils. Blended with Merlot. Structured, age-worthy. 1855 Classification.<br>• <strong>Napa Valley:</strong> Ripe, powerful, high alcohol, often heavily oaked.<br>• <strong>Coonawarra:</strong> Terra rossa soil. Eucalyptus and blackcurrant.<br>• <strong>Maipo Valley, Chile:</strong> Excellent value.<br><br><strong>Merlot</strong> — softer, plummier, more approachable. Medium tannin. Plum, red cherry, chocolate.<br>• <strong>Bordeaux Right Bank (Saint-Émilion, Pomerol):</strong> Clay/limestone. Merlot-dominant. Château Pétrus is 100% Merlot."},
+{n:"Pinot Noir — The Heartbreak Grape",v:"",c:"Thin-skinned, notoriously difficult to grow — but capable of producing the world's most elegant wines. Pale to medium colour, light to medium body, high acidity, low to medium tannin.<br><br>Classic aromas: red cherry, strawberry, raspberry. With age: earth, mushroom, leather, game.<br><br>• <strong>Burgundy (Côte de Nuits):</strong> The benchmark. Vineyard hierarchy: Regional → Village → Premier Cru → Grand Cru. Grand Cru Burgundy among the most expensive wines on Earth.<br>• <strong>Yarra Valley, Australia:</strong> Cool climate, elegant, cherry and spice.<br>• <strong>Central Otago, NZ:</strong> World's most southerly wine region. Concentrated, cherry, thyme.<br>• <strong>Willamette Valley, Oregon:</strong> Earthy, elegant, Burgundian."},
+{n:"Syrah/Shiraz — Two Identities",v:"",c:"Same grape, two names, dramatically different expressions.<br><br><strong>Syrah (Northern Rhône):</strong><br>• <strong>Hermitage & Côte-Rôtie:</strong> Medium to full body. Black pepper, violet, dark fruit, smoked meat. Structured, age-worthy.<br>• <strong>Crozes-Hermitage & Saint-Joseph:</strong> More accessible, good value.<br><br><strong>Shiraz (Australia):</strong><br>• <strong>Barossa Valley:</strong> Bold, rich, high alcohol. Dark fruit, chocolate, liquorice, vanilla from American oak. Some 100+ year old vines.<br>• <strong>McLaren Vale:</strong> Slightly more elegant, dark fruit with chocolate.<br>• <strong>Heathcote:</strong> Spicy, peppery, more Rhône-like.<br><br><strong>Southern Rhône (Châteauneuf-du-Pape):</strong> Syrah blended with Grenache and Mourvèdre. Warm, generous, spicy."},
+{n:"Regional Red Grapes",v:"",c:"<strong>Gamay</strong> (Beaujolais): Light body, low tannin, high acidity. Red cherry. Cru Beaujolais (Morgon, Fleurie, Moulin-à-Vent) is more serious.<br><br><strong>Grenache/Garnacha</strong> (Southern Rhône, Spain, Australia): Medium tannin, high alcohol. Red fruit, spice. Key in Châteauneuf-du-Pape and Priorat.<br><br><strong>Tempranillo</strong> (Rioja, Ribera del Duero): Medium body, red cherry, leather, vanilla. Ageing tiers: Joven, Crianza, Reserva, Gran Reserva.<br><br><strong>Sangiovese</strong> (Tuscany — Chianti, Brunello di Montalcino): High acidity, medium tannin. Red cherry, dried herbs, earth.<br><br><strong>Nebbiolo</strong> (Piedmont — Barolo, Barbaresco): Pale colour but massive tannin. Rose, tar, cherry, leather. Needs years of ageing.<br><br><strong>Malbec</strong> (Mendoza, Argentina): Deep colour, full body. Plum, violet, chocolate. High altitude vineyards."}]},
+{n:"LO5: Sparkling & Fortified",l:[
+{n:"Sparkling Wine Styles",v:"",c:"<strong>Traditional Method</strong> (second fermentation in bottle):<br>• <strong>Champagne:</strong> Chardonnay, Pinot Noir, Pinot Meunier. NV: blend of years. Vintage: single exceptional year. Extended lees ageing creates biscuit, brioche complexity.<br>• <strong>Crémant</strong> (Loire, Alsace, Burgundy): Same method, excellent value.<br>• <strong>Cava</strong> (Spain): Macabeo, Xarel-lo, Parellada. Crisp, citrus, good value.<br>• <strong>English Sparkling</strong>: Chalk soils similar to Champagne. Rapidly gaining acclaim.<br><br><strong>Tank/Charmat Method:</strong><br>• <strong>Prosecco</strong> (Veneto): Glera grape. Fresh, fruity, floral, pear. Light, off-dry.<br>• <strong>Asti</strong> (Piedmont): Muscat grape. Sweet, low alcohol, grapey."},
+{n:"Fortified Wine Styles",v:"",c:"<strong>Port (Douro Valley, Portugal):</strong> Spirit added <em>during</em> fermentation. Always sweet.<br>• <strong>Ruby Port</strong>: Young, fruity. Aged in large vessels.<br>• <strong>Tawny Port</strong>: Aged in small barrels (oxidative). Nutty, caramel, dried fruit. 10, 20, 30, 40 Year Tawny.<br>• <strong>Vintage Port</strong>: From exceptional years. Intense, tannic, needs decades.<br><br><strong>Sherry (Jerez, Spain):</strong> Spirit added <em>after</em> fermentation. Palomino grape (dry), Pedro Ximénez (sweet).<br>• <strong>Fino & Manzanilla</strong>: Under flor yeast. Pale, bone-dry, tangy, almond.<br>• <strong>Amontillado</strong>: Starts under flor, then oxidative. Amber, nutty, dry.<br>• <strong>Oloroso</strong>: Full oxidative ageing. Dark, rich, walnut.<br>• <strong>Pedro Ximénez (PX)</strong>: Sun-dried grapes. Intensely sweet, raisin, fig."}]},
+{n:"LO6: Storage, Service & Pairing",l:[
+{n:"Professional Service & Food Matching",v:"",c:"<strong>Storage:</strong> Horizontal, 10–15°C, away from light, vibration, and odours.<br><br><strong>Common faults:</strong> TCA (cork taint), oxidation, VA, reduction, heat damage, light strike.<br><br><strong>WSET food pairing framework:</strong><br>1. <strong>High-acid wines</strong> pair with fatty/oily food<br>2. <strong>Tannic wines</strong> pair with protein-rich food<br>3. <strong>Sweet wines</strong> must be sweeter than the food<br>4. <strong>Match weight</strong>: light food = light wine, heavy food = heavy wine<br>5. <strong>Bridge flavours</strong>: find common elements<br>6. <strong>Avoid</strong>: tannic wine with umami, dry wine with sweet food"}]}
+]},
+{id:4,t:"WSET Level 3 Award in Wines",p:1495,pd:"$1,495",lv:"advanced",r:4.9,st:312,du:"84 hours",ic:"🏆",gr:"linear-gradient(135deg,#B8860B,#8B6914)",d:"Advanced — 50 MCQ + short-answer written exam + blind tasting of 2 wines. 55% pass.",m:[
+{n:"Unit 1A: Factors of Production",l:[
+{n:"Location & Climate",v:"",c:"<strong>Climate types:</strong><br><br><strong>Continental</strong> (Burgundy, Alsace, Barossa): Large temperature variation between seasons. Warm summers, cold winters. Risk of frost.<br><br><strong>Maritime</strong> (Bordeaux, Margaret River): Moderate temperatures year-round. Moderate rainfall. Risk of rain at harvest.<br><br><strong>Mediterranean</strong> (Southern Rhône, Southern Italy, Central Spain): Warm to hot, dry summers. Low disease pressure. Risk of drought.<br><br><strong>Mesoclimate and microclimate:</strong> Altitude (every 100m rise ≈ 0.6°C cooler), aspect (sun-facing slopes ripen more), proximity to water, soil colour and heat retention all matter.<br><br><strong>Climate change:</strong> Average temperatures rising. Harvest dates earlier. Higher alcohol levels. New regions becoming viable (England, Denmark, Tasmania)."},
+{n:"Viticulture Decisions",v:"",c:"<strong>Training systems:</strong> Bush vines (gobelet) in hot, dry climates. Trellised vines (VSP, Scott Henry) in cooler/wetter climates — better air circulation, mechanisation possible.<br><br><strong>Pruning & canopy management:</strong> Spur vs cane pruning. Leaf removal exposes fruit to sunlight. Shoot thinning and green harvest reduce yield to concentrate flavours.<br><br><strong>Yield management:</strong> Regulated by appellation laws (e.g. Burgundy Grand Cru: max 35 hl/ha). Lower yield generally = more concentrated wine.<br><br><strong>Harvest:</strong> Machine harvesting is fast and cheap. Hand harvesting essential for steep slopes (Mosel), botrytis selection (Sauternes), whole-bunch pressing (Champagne)."},
+{n:"Winemaking & Maturation",v:"",c:"<strong>Pre-fermentation:</strong> Sorting, destemming (or whole-bunch inclusion for Pinot Noir/Syrah), crushing, cold soaking.<br><br><strong>Fermentation:</strong> Yeast selection (wild vs commercial). Temperature control. Punch-down and pump-over for reds. Extended maceration for more tannin.<br><br><strong>Post-fermentation:</strong> Pressing, MLF decision, racking, fining (egg white, bentonite), filtration, sulphur dioxide addition.<br><br><strong>Maturation vessels:</strong> Stainless steel (inert, fresh), oak barrels (flavour + micro-oxygenation), concrete eggs (texture), amphora/qvevri (ancient method).<br><br><strong>Oak details:</strong> 225L barrique standard. New oak = more flavour. Oak toast levels affect flavour. French oak (fine, subtle) vs American oak (coconut, dill)."}]},
+{n:"Unit 1B: France",l:[
+{n:"Bordeaux",v:"",c:"<strong>Left Bank (Médoc & Graves):</strong> Gravel soils, Cabernet Sauvignon-dominant. Key appellations: Pauillac (Latour, Lafite, Mouton), Margaux, Saint-Julien, Pessac-Léognan (Haut-Brion). 1855 Classification. Structured, tannic, cedary, long-lived.<br><br><strong>Right Bank:</strong> Clay/limestone, Merlot-dominant. Saint-Émilion (Ausone, Cheval Blanc), Pomerol (Pétrus, Le Pin). Richer, plummier, more approachable young.<br><br><strong>Dry whites:</strong> Pessac-Léognan — Sauvignon/Sémillon blends.<br><br><strong>Sweet whites:</strong> Sauternes — noble rot. Château d'Yquem is the benchmark."},
+{n:"Burgundy",v:"",c:"<strong>Vineyard hierarchy:</strong><br>1. <strong>Regional</strong> (Bourgogne)<br>2. <strong>Village</strong> (e.g. Gevrey-Chambertin, Meursault)<br>3. <strong>Premier Cru</strong> (named vineyard within village)<br>4. <strong>Grand Cru</strong> (own appellation — Chambertin, Romanée-Conti, Montrachet)<br><br><strong>Côte de Nuits (reds):</strong> Gevrey-Chambertin, Vosne-Romanée, Nuits-Saint-Georges. Home to most Grand Cru reds.<br><br><strong>Côte de Beaune (whites + reds):</strong> Meursault, Puligny-Montrachet. Le Montrachet — world's greatest white wine vineyard. Also: Pommard, Volnay.<br><br><strong>Chablis:</strong> Chardonnay only. Unoaked, mineral. Kimmeridgian limestone. Petit Chablis → Chablis → Premier Cru → Grand Cru.<br><br><strong>Beaujolais:</strong> Gamay. 10 Crus (Morgon, Fleurie, Moulin-à-Vent)."},
+{n:"Rhône, Loire & Southern France",v:"",c:"<strong>Northern Rhône:</strong> Steep granite slopes. Syrah (reds). Hermitage, Côte-Rôtie (elegant Syrah, sometimes co-fermented with Viognier), Condrieu (Viognier), Crozes-Hermitage, Saint-Joseph.<br><br><strong>Southern Rhône:</strong> Flat, warm, stony soils (galets). Grenache-based blends. Châteauneuf-du-Pape (13 permitted varieties), Côtes du Rhône.<br><br><strong>Loire:</strong> Muscadet (Melon de Bourgogne, sur lie). Sancerre & Pouilly-Fumé (Sauvignon Blanc). Vouvray (Chenin Blanc). Chinon & Bourgueil (Cabernet Franc).<br><br><strong>Alsace:</strong> Aromatic whites — Riesling, Gewürztraminer, Pinot Gris, Muscat. Grand Cru vineyards. Vendange Tardive and Sélection de Grains Nobles."}]},
+{n:"Unit 1C: Europe & New World",l:[
+{n:"Italy & Spain",v:"",c:"<strong>Italy:</strong><br>• <strong>Piedmont</strong>: Nebbiolo → Barolo (DOCG, min 3 years ageing) and Barbaresco. Pale colour, high tannin, high acid. Rose, tar, cherry, truffle.<br>• <strong>Veneto</strong>: Valpolicella (Corvina), Amarone (dried grapes — rich, powerful).<br>• <strong>Tuscany</strong>: Sangiovese → Chianti Classico, Brunello di Montalcino. Also Super Tuscans (Sassicaia, Tignanello — IGT).<br><br><strong>Spain:</strong><br>• <strong>Rioja</strong> (DOCa): Tempranillo, American oak ageing. Joven → Crianza → Reserva → Gran Reserva.<br>• <strong>Ribera del Duero</strong>: Powerful Tempranillo.<br>• <strong>Priorat</strong> (DOCa): Garnacha, old vines, llicorella slate. Powerful, expensive.<br>• <strong>Rías Baixas</strong>: Albariño. Crisp, citrus, saline."},
+{n:"Australia, NZ & Americas",v:"",c:"<strong>Australia:</strong><br>• Barossa Valley: Shiraz, old vines, bold<br>• Eden/Clare Valley: Riesling, bone-dry<br>• Margaret River: Cabernet, Chardonnay, elegant<br>• Yarra Valley: Pinot Noir, cool climate<br>• Hunter Valley: Sémillon, Shiraz<br>• Coonawarra: Cabernet, terra rossa<br>• Tasmania: sparkling, Pinot<br><br><strong>New Zealand:</strong> Marlborough (Sauvignon Blanc), Central Otago (Pinot Noir), Hawke's Bay (reds, Syrah).<br><br><strong>USA:</strong> Napa Valley (Cabernet), Sonoma, Willamette Valley (Pinot Noir), Washington State.<br><br><strong>Argentina:</strong> Mendoza — Malbec at high altitude. Uco Valley.<br><br><strong>Chile:</strong> Maipo (Cabernet), Casablanca (Sauvignon Blanc), Colchagua (Carmenère).<br><br><strong>South Africa:</strong> Stellenbosch (Cabernet, blends), Swartland (Chenin Blanc, Syrah). Pinotage."}]},
+{n:"Unit 1D: Sparkling & Fortified",l:[
+{n:"Sparkling & Fortified for Level 3",v:"",c:"<strong>Champagne in depth:</strong> Blanc de Blancs: 100% Chardonnay. Blanc de Noirs: 100% black grapes. Rosé: blending or saignée. NV minimum 15 months lees. Vintage minimum 3 years. Prestige Cuvée: Dom Pérignon, Krug, Cristal. Dosage: Brut Nature (0g/L) to Doux (50+g/L).<br><br><strong>Port in depth:</strong> Indigenous grapes (Touriga Nacional, Touriga Franca, Tinta Roriz). Vintage Port: declared exceptional years, aged decades. LBV: aged 4–6 years, ready to drink. Colheita: single-year Tawny.<br><br><strong>Sherry in depth:</strong> Solera system: fractional blending ensures consistency. Fino/Manzanilla: biologically aged under flor. Amontillado: loses flor, then oxidative. Palo Cortado: rare, starts as Fino then develops like Oloroso."}]},
+{n:"Unit 2: Analytical Tasting",l:[
+{n:"The Level 3 SAT",v:"",c:"The WSET Level 3 SAT requires detailed analytical assessment. Blind taste two wines (one white, one red) in 30 minutes.<br><br><strong>Appearance:</strong> Be specific — 'medium lemon' not just 'yellow'.<br><br><strong>Nose:</strong> Identify specific aromas and classify as primary (grape-derived), secondary (winemaking — butter, vanilla, toast), or tertiary (ageing — dried fruit, leather, mushroom, petrol).<br><br><strong>Palate:</strong> Be precise — 'medium(+) acidity' not just 'acidic'. Assess sweetness, acidity, tannin, alcohol, body, flavour intensity, flavour characteristics, finish length.<br><br><strong>Conclusion:</strong> Quality assessment (poor/acceptable/good/very good/outstanding) with justification based on balance, length, intensity, complexity. Readiness for drinking.<br><br><strong>Key to success:</strong> Practice the SAT rigorously. Use exact WSET vocabulary. Be specific and justified."}]}
+]},
+{id:5,t:"Food & Wine Pairing Masterclass",p:249,pd:"$249",lv:"intermediate",r:4.6,st:445,du:"6 hours",ic:"🍽️",gr:"linear-gradient(135deg,#E65100,#C62828)",d:"The science and art of matching wine with food — from sommeliers.",m:[
+{n:"Pairing Science",l:[
+{n:"Flavour Interactions",v:"",c:"<strong>Acidity</strong> in wine refreshes after rich, fatty food — it cuts through oil and cleanses the palate. Sauvignon Blanc with goat cheese, Champagne with fried chicken.<br><br><strong>Tannin</strong> is softened by protein and salt — protein molecules bind with tannin, reducing astringency. Cabernet and steak is timeless.<br><br><strong>Sweetness in food</strong> makes dry wine taste bitter. Wine must always be at least as sweet as the food. Sauternes with crème brûlée, Port with chocolate.<br><br><strong>Umami</strong> (mushrooms, aged parmesan, soy sauce, tomato paste) intensifies bitterness and tannin. Pair umami-rich foods with fruity, low-tannin wines."},
+{n:"Weight Matching & Classic Pairings",v:"",c:"<strong>Match wine body to dish richness</strong> — the single most useful principle.<br>• Light salad → Pinot Grigio<br>• Rich braised lamb → Barossa Shiraz<br>• Grilled fish → Chablis or Albariño<br>• Roast duck → Pinot Noir<br><br><strong>Classic pairings:</strong><br>• Champagne + oysters (bubbles + brine + acidity)<br>• Chablis + seafood (mineral + citrus + lean protein)<br>• Sancerre + goat cheese (acid + fat, Loire + Loire)<br>• Barolo + truffle risotto (earthy wine + earthy dish)<br>• Barossa Shiraz + BBQ lamb (bold + bold)<br>• Clare Riesling + Thai curry (sweetness + acid cool heat)<br>• Sauternes + Roquefort (sweet + salty)<br>• Tawny Port + chocolate (sweet + rich)<br>• Fino Sherry + tapas (dry, saline + small salty dishes)"}]}
+]},
+{id:6,t:"Wine Regions of the World",p:349,pd:"$349",lv:"intermediate",r:4.7,st:389,du:"12 hours",ic:"🌍",gr:"linear-gradient(135deg,#00695C,#1565C0)",d:"A virtual journey through the world's greatest wine regions.",m:[
+{n:"Old World",l:[
+{n:"France",v:"",c:"France is the benchmark for most wine styles. The <strong>AOC/AOP system</strong> guarantees origin, permitted grape varieties, and production methods.<br><br><strong>Bordeaux:</strong> World's largest fine wine region. Left Bank (Cabernet), Right Bank (Merlot), dry whites, sweet Sauternes.<br><strong>Burgundy:</strong> Pinot Noir and Chardonnay. Vineyard hierarchy. Terroir-focused.<br><strong>Champagne:</strong> Most prestigious sparkling wine. Traditional Method only.<br><strong>Rhône:</strong> Northern (Syrah) and Southern (Grenache blends).<br><strong>Loire:</strong> Muscadet, Sancerre, Vouvray, Chinon.<br><strong>Alsace:</strong> Aromatic whites. Grand Cru system.<br><strong>Languedoc-Roussillon:</strong> Southern France's value region."},
+{n:"Italy, Spain, Germany & Portugal",v:"",c:"<strong>Italy:</strong> More indigenous varieties than any country. DOCG: Barolo, Barbaresco, Chianti Classico, Brunello, Amarone. Super Tuscans (IGT). North: Nebbiolo, Corvina. Central: Sangiovese. South: Primitivo, Nero d'Avola.<br><br><strong>Spain:</strong> Rioja (DOCa): Tempranillo, oak ageing tiers. Ribera del Duero. Priorat (DOCa): Garnacha. Rías Baixas: Albariño. Jerez: Sherry. Penedès: Cava.<br><br><strong>Germany:</strong> Prädikat system: Kabinett → Spätlese → Auslese → BA → TBA → Eiswein. VDP classification. Mosel, Rheingau, Pfalz, Nahe.<br><br><strong>Portugal:</strong> Douro (Port + dry reds), Dão, Alentejo, Vinho Verde."}]},
+{n:"New World & Emerging",l:[
+{n:"Australia, NZ & Americas",v:"",c:"<strong>Australia:</strong> Barossa (Shiraz), Eden/Clare (Riesling), Margaret River (Cabernet, Chardonnay), Yarra (Pinot), Hunter (Sémillon), Coonawarra (Cabernet), Tasmania (sparkling), McLaren Vale (Shiraz, Grenache).<br><br><strong>New Zealand:</strong> Marlborough (Sauvignon Blanc), Central Otago (Pinot Noir), Hawke's Bay (reds), Martinborough (Pinot).<br><br><strong>USA:</strong> Napa (Cabernet), Sonoma (Pinot, Chardonnay, Zinfandel), Willamette (Pinot), Washington State.<br><br><strong>Argentina:</strong> Mendoza — Malbec at high altitude. Uco Valley.<br><br><strong>Chile:</strong> Maipo (Cabernet), Casablanca (Sauvignon Blanc), Colchagua (Carmenère, Syrah).<br><br><strong>South Africa:</strong> Stellenbosch, Swartland, Constantia. Pinotage."},
+{n:"Emerging Trends & Climate Change",v:"",c:"<strong>Natural wine:</strong> Minimal intervention — no additives, native yeast, unfiltered. Orange wine (skin-contact whites) revives ancient Georgian qvevri techniques.<br><br><strong>Climate change:</strong> Rising temperatures reshaping wine geography. England now produces world-class sparkling. Tasmania, Patagonia emerging. Drought-resistant rootstocks critical.<br><br><strong>Sustainability:</strong> Organic, biodynamic, sustainable certifications. Consumer demand driving rapid adoption.<br><br><strong>Technology:</strong> Precision viticulture (drones, sensors), AI-powered winemaking, blockchain for provenance, direct-to-consumer sales."}]}
+]},
+{id:7,t:"Hospitality Wine Service",p:199,pd:"$199",lv:"beginner",r:4.5,st:567,du:"4 hours",ic:"🍷",gr:"linear-gradient(135deg,#880E4F,#E91E63)",d:"Essential wine service skills for hospitality professionals.",m:[
+{n:"Professional Service",l:[
+{n:"Opening, Presenting & Pouring",v:"",c:"<strong>Presenting:</strong> Bring the bottle. Present the label to the host. Wait for confirmation.<br><br><strong>Opening (still):</strong> Waiter's friend corkscrew. Cut foil below lip. Insert worm centrally. Lever in two stages. Remove cork smoothly. Wipe rim. Pour taste for host.<br><br><strong>Opening (sparkling):</strong> Never point at anyone. Remove foil and cage. Grip cork. Twist the base of the bottle. Gentle sigh, not loud pop. Pour slowly in two stages.<br><br><strong>Pouring:</strong> Serve ladies first, then gentlemen, host last. Pour to one-third. Top up regularly. Return whites and sparkling to ice bucket."},
+{n:"Temperature, Glassware & Decanting",v:"",c:"<strong>Glassware:</strong> Larger bowls for reds (aeration). Smaller bowls for whites (preserve freshness). Flutes for sparkling. Hold by stem always.<br><br><strong>Decanting:</strong> Two purposes: (1) Separate old wine from sediment. (2) Aerate young wine. Young tannic reds benefit most.<br><br><strong>Temperatures:</strong> Sparkling: 6–10°C. Light whites: 7–10°C. Full whites/light reds: 10–15°C. Full reds: 15–18°C."},
+{n:"Handling Faults & Complaints",v:"",c:"<strong>Cork taint (TCA):</strong> Musty, wet cardboard. Affects 3–5%. Replace without argument.<br><strong>Oxidation:</strong> Brownish, flat, stale. Replace.<br><strong>Volatile acidity:</strong> Vinegar smell. Replace if excessive.<br><strong>Reduction:</strong> Rotten egg. Often fixable by decanting.<br><strong>Heat damage:</strong> Cooked, jammy. Cork pushed out.<br><br>Always remain professional. Never argue. Replace immediately. A replaced bottle costs far less than a lost customer."}]},
+{n:"Sales & Wine List Management",l:[
+{n:"Upselling & Recommendations",v:"",c:"<strong>Reading the guest:</strong> Ask open questions: 'Do you prefer light and refreshing, or rich and full-bodied?' Guide without being pretentious.<br><br><strong>Upselling:</strong> Suggest premium wines by the glass. Use storytelling. Position mid-range as excellent value. Recommend half-bottles or magnums for special occasions.<br><br><strong>Common mistakes:</strong> Being pretentious. Pushing expensive wines on budget-conscious guests. Not knowing the wine list."},
+{n:"Building & Managing a Wine List",v:"",c:"<strong>Structure:</strong> Organise by style (light to bold) not just region. Include brief tasting notes. Mark sommelier picks.<br><br><strong>Pricing:</strong> Standard: 2.5–3.5x wholesale for bottles. Higher for by-the-glass (4–5x). Entry-level wines should be genuinely enjoyable.<br><br><strong>Seasonal updates:</strong> Rotate quarterly. Feature seasonal pairings. Promote new vintages.<br><br><strong>Inventory:</strong> Track sales velocity. FIFO rotation. Monitor storage daily. Regular stocktakes. Build supplier relationships."}]}
+]}
+];
+// ── 60 PRACTICE EXAM QUESTIONS ──
+const Q=[
+{ci:2,q:"Which is an example of a full-bodied red wine?",o:["Pinot Grigio","Cabernet Sauvignon","Beaujolais","Vinho Verde"],a:1,e:"Cabernet Sauvignon is deeply coloured, high in tannin, and full-bodied."},
+{ci:2,q:"Which is true of Port?",o:["Always sweet and high in alcohol","Always dry and high in alcohol","Can be dry, medium, or sweet","Same as Sherry"],a:0,e:"Spirit is added during fermentation, leaving residual sugar. Port is always sweet."},
+{ci:2,q:"Which grape part provides red wine with its colour?",o:["Seeds","Pulp","Skins","Stems"],a:2,e:"Skins contain anthocyanin pigments, extracted during maceration."},
+{ci:2,q:"What converts grape juice into wine?",o:["Distillation","Alcoholic fermentation","Pasteurisation","Carbonation"],a:1,e:"Yeast converts sugars into alcohol and CO₂ during fermentation."},
+{ci:2,q:"Chilli heat in food makes wine seem...",o:["Drier and fuller","More fruity and sweeter","Less bitter","More drying, more bitter, hotter"],a:3,e:"Chilli heat amplifies the perception of alcohol's burning sensation."},
+{ci:2,q:"Light-bodied red wine should be served at approximately...",o:["6–8°C","7–10°C","13°C","18°C"],a:2,e:"Light reds are best slightly chilled at around 13°C."},
+{ci:2,q:"Why is acidity important in wine?",o:["It is sour and should be avoided","It creates alcohol","It gives wine a refreshing characteristic","It adds sweetness"],a:2,e:"Acidity provides freshness and balance, making wine food-friendly."},
+{ci:2,q:"Which of these is a black (red) grape?",o:["Riesling","Syrah","Chardonnay","Pinot Grigio"],a:1,e:"Syrah/Shiraz is a black grape producing deeply coloured red wines."},
+{ci:2,q:"What is the ideal storage temperature for wine?",o:["0–5°C","10–15°C","18–22°C","25–30°C"],a:1,e:"10–15°C with consistent temperature is ideal for wine storage."},
+{ci:2,q:"Sparkling wines get their bubbles from...",o:["Adding carbonated water","A secondary fermentation","Boiling the wine","Adding citric acid"],a:1,e:"A second fermentation produces CO₂ that dissolves in the wine."},
+{ci:2,q:"Which tasting note best describes Pinot Noir?",o:["High acid, low tannin, blackcurrant, pepper","Low acid, high tannin, red fruits","High acid, high tannin, red fruit","High acid, low tannin, red cherry and strawberry"],a:3,e:"Pinot Noir has high acidity, low-medium tannin, with delicate red cherry and strawberry."},
+{ci:2,q:"Rosé wine gets its pink colour from...",o:["Mixing red and white wine","Adding food colouring","Brief skin contact with red grapes","Using pink grapes"],a:2,e:"Red grape skins are left in contact with juice briefly, then pressed off."},
+{ci:2,q:"Which wine style uses the Traditional Method?",o:["Prosecco","Port","Champagne","Sherry"],a:2,e:"Champagne undergoes secondary fermentation in bottle (Traditional Method)."},
+{ci:2,q:"Cork taint (TCA) makes wine smell like...",o:["Vinegar","Rotten eggs","Wet cardboard / musty basement","Burnt rubber"],a:2,e:"TCA produces a musty, damp cardboard aroma, stripping fruit character."},
+{ci:2,q:"The WSET SAT assesses wine in which order?",o:["Nose, Palate, Appearance","Palate, Appearance, Nose","Appearance, Nose, Palate","Appearance, Palate, Nose"],a:2,e:"SAT follows: Appearance → Nose → Palate → Conclusion."},
+{ci:3,q:"Marlborough, New Zealand is most famous for which grape?",o:["Chardonnay","Pinot Noir","Sauvignon Blanc","Riesling"],a:2,e:"Marlborough produces ~85% of NZ wine, dominated by pungent Sauvignon Blanc."},
+{ci:3,q:"Barolo is made from which grape variety?",o:["Sangiovese","Nebbiolo","Barbera","Corvina"],a:1,e:"Barolo DOCG requires 100% Nebbiolo, grown in Piedmont, Italy."},
+{ci:3,q:"What gives Champagne its bubbles?",o:["Added CO₂","Primary fermentation","Secondary fermentation in bottle","Carbonated water"],a:2,e:"The Traditional Method: secondary fermentation occurs inside the sealed bottle."},
+{ci:3,q:"Which German Prädikat level indicates grapes affected by noble rot?",o:["Kabinett","Spätlese","Auslese","Beerenauslese and TBA"],a:3,e:"BA and TBA are made from individually selected botrytis-affected berries."},
+{ci:3,q:"Châteauneuf-du-Pape is known for which grape?",o:["Syrah","Cabernet Sauvignon","Grenache","Merlot"],a:2,e:"Grenache is the dominant variety in CdP, with up to 13 varieties permitted."},
+{ci:3,q:"Riesling is most associated with which country?",o:["France","Italy","Germany","Spain"],a:2,e:"Germany is Riesling's homeland — Mosel, Rheingau, Pfalz, and Nahe."},
+{ci:3,q:"What does malolactic conversion do?",o:["Increases acidity","Converts malic acid to softer lactic acid","Adds sweetness","Removes tannin"],a:1,e:"MLF converts sharp malic acid to softer lactic acid, adding creaminess."},
+{ci:3,q:"Chianti Classico DOCG is made primarily from...",o:["Nebbiolo","Tempranillo","Sangiovese","Corvina"],a:2,e:"Chianti Classico requires a minimum of 80% Sangiovese."},
+{ci:3,q:"Which white grape is most planted in South Africa?",o:["Sauvignon Blanc","Chardonnay","Chenin Blanc","Riesling"],a:2,e:"Chenin Blanc (locally called Steen) is SA's most planted white variety."},
+{ci:3,q:"How does altitude affect grape growing?",o:["Higher = warmer","Higher = cooler, preserving acidity","Higher always = sweeter grapes","No impact"],a:1,e:"Every 100m of altitude rise drops temperature by ~0.6°C, preserving acidity."},
+{ci:3,q:"Prosecco is made using which method?",o:["Traditional Method","Tank/Charmat Method","Asti Method","Carbonation"],a:1,e:"Prosecco undergoes secondary fermentation in pressurised tanks (Charmat)."},
+{ci:3,q:"Which Bordeaux bank is Merlot-dominant?",o:["Left Bank (Médoc)","Right Bank (Saint-Émilion, Pomerol)","Both equally","Neither"],a:1,e:"The Right Bank's clay/limestone soils favour Merlot over Cabernet."},
+{ci:3,q:"Fino Sherry is aged under...",o:["Oak chips","A layer of flor yeast","Botrytis","Charcoal"],a:1,e:"Flor is a film of yeast that protects Fino from oxidation."},
+{ci:3,q:"The 'heartbreak grape' refers to...",o:["Cabernet Sauvignon","Chardonnay","Pinot Noir","Merlot"],a:2,e:"Pinot Noir is thin-skinned, disease-prone, and notoriously difficult to grow."},
+{ci:3,q:"Which Australian region is famous for Riesling?",o:["Barossa Valley","Clare Valley","Margaret River","Hunter Valley"],a:1,e:"Clare Valley and Eden Valley produce benchmark Australian Riesling."},
+{ci:3,q:"What effect does new oak have on wine?",o:["Makes it more acidic","Adds vanilla, toast, and spice flavours","Removes tannin","Makes it lighter"],a:1,e:"New oak imparts vanilla, toast, coconut, clove, and spice."},
+{ci:3,q:"Rioja Gran Reserva has the longest oak requirement?",o:["True","False","Same as Crianza","Only for whites"],a:0,e:"Gran Reserva requires minimum 2 years in oak, not released until 6th year."},
+{ci:3,q:"Gewürztraminer is characterised by aromas of...",o:["Grass and gooseberry","Lychee and rose petal","Blackcurrant and cedar","Lemon and mineral"],a:1,e:"Gewürztraminer is intensely aromatic with exotic lychee, rose petal, ginger."},
+{ci:3,q:"Malbec is most associated with which country?",o:["Chile","Australia","Argentina","France"],a:2,e:"Argentina's Mendoza region produces world-class Malbec at high altitude."},
+{ci:3,q:"Key difference between Port and Sherry fortification?",o:["Port uses grape spirit, Sherry uses brandy","Port: spirit during fermentation; Sherry: after","Port is from Spain, Sherry from Portugal","No difference"],a:1,e:"Port: spirit during (sweet). Sherry: spirit after (dry base wine)."},
+{ci:3,q:"Which food element makes tannic wine taste more bitter?",o:["Salt","Fat/protein","Umami","Acidity"],a:2,e:"Umami intensifies the perception of bitterness, tannin, and alcohol."},
+{ci:3,q:"Coonawarra is famous for which combination?",o:["Shiraz on granite","Chardonnay on chalk","Cabernet Sauvignon on terra rossa","Riesling on slate"],a:2,e:"Coonawarra's red terra rossa soil over limestone produces distinctive Cabernet."},
+{ci:3,q:"Amarone della Valpolicella is made by...",o:["Late harvest","Drying grapes before fermentation","Noble rot","Freezing grapes"],a:1,e:"Grapes are dried for months (appassimento), concentrating sugars and flavours."},
+{ci:3,q:"Which Burgundy classification is the highest?",o:["Regional","Village","Premier Cru","Grand Cru"],a:3,e:"Grand Cru vineyards have their own appellation and produce Burgundy's finest wines."},
+{ci:3,q:"The Solera system is used in production of...",o:["Champagne","Port","Sherry","Barolo"],a:2,e:"Solera is a fractional blending system unique to Sherry production."},
+{ci:4,q:"Which yeast is most commonly used in winemaking?",o:["Brettanomyces","Saccharomyces cerevisiae","Trichloroanisole","Geotrichum"],a:1,e:"Saccharomyces cerevisiae is the primary fermentation yeast."},
+{ci:4,q:"Which fault smells like nail polish remover?",o:["Cork taint","Oxidation","Hydrogen sulfide","Volatile acidity"],a:3,e:"Volatile acidity (ethyl acetate) produces nail polish remover aromas."},
+{ci:4,q:"Which best describes a Tawny Port?",o:["Pale, dry, fresh almonds","Orange-brown, medium-sweet, dried fruits and toffee","Deep purple, sweet, plum","Near-black, coffee and prunes"],a:1,e:"Extended oxidative barrel ageing gives Tawny its amber colour and nutty character."},
+{ci:4,q:"What is the alcohol range for medium-alcohol wine?",o:["Under 11%","11–13.9%","14–16%","Over 16%"],a:1,e:"WSET defines medium alcohol as 11–13.9% ABV."},
+{ci:4,q:"Diacetyl (buttery flavour) comes from...",o:["Cool climate growing","Malolactic conversion","Brettanomyces","Primary fermentation"],a:1,e:"MLF produces diacetyl, responsible for butter and butterscotch aromas."},
+{ci:4,q:"Which pair increases perception of bitterness and tannin?",o:["Acidity and salt","Bitterness and sweetness","Chilli heat and umami","Salt and sweetness"],a:2,e:"Both chilli heat and umami amplify bitterness, tannin, and alcohol perception."},
+{ci:4,q:"How many buds are typically retained with cane pruning?",o:["2 to 3","4 to 7","8 to 20","Depends on vintage"],a:2,e:"Cane pruning retains 8–20 buds, common in Burgundy and Champagne."},
+{ci:4,q:"A bottle-aged white wine would best show...",o:["Pale gold with leather aromas","Pale tawny with vanilla","Medium gold with honey and dried apricot","Medium gold with oystershell"],a:2,e:"Bottle-aged whites develop deeper gold colour with honey, dried fruit, toast."},
+{ci:4,q:"New oak vs neutral oak — what is the difference?",o:["New oak extracts less flavour","New oak is only for whites","New oak adds vanilla, toast, spice; old oak mainly adds texture","New oak makes wine more acidic"],a:2,e:"New oak imparts strong flavours; old oak provides gentle oxidation and texture."},
+{ci:4,q:"Which region is NOT popular for Pinot Noir?",o:["Burgundy","Central Otago","Stellenbosch","Tasmania"],a:2,e:"Stellenbosch is known for Cabernet and Bordeaux blends, not Pinot Noir."},
+{ci:4,q:"The Asti Method involves...",o:["Secondary fermentation in bottle","Fermentation stopped in pressurised tank","Fermentation in oak","Adding grape spirit"],a:1,e:"The Asti Method captures CO₂ from a single fermentation stopped early."},
+{ci:4,q:"'Méthode Cap Classique' is used in...",o:["Champagne","Rioja","South Africa","Burgundy"],a:2,e:"MCC is South Africa's term for Traditional Method sparkling wine."},
+{ci:4,q:"Higher altitude effect on grapes?",o:["Warmer, faster ripening","Cooler, slower ripening, more UV","No significant effect","Higher humidity"],a:1,e:"Higher altitude = cooler but more intense UV, producing thick-skinned grapes."},
+{ci:4,q:"Continental climates are characterised by...",o:["Consistent mild temperatures","Large temperature differences between seasons","Cool, damp conditions","Hot, humid summers"],a:1,e:"Continental climates have warm/hot summers and cold winters."},
+{ci:4,q:"Which is NOT a factor in WSET quality assessment?",o:["Balance","Complexity","Price","Length of finish"],a:2,e:"WSET assesses quality by balance, intensity, complexity, and length — not price."},
+{ci:4,q:"Pétrus is made from...",o:["100% Cabernet Sauvignon","100% Merlot","Pinot Noir","Nebbiolo"],a:1,e:"Château Pétrus in Pomerol is virtually 100% Merlot on clay soil."},
+{ci:4,q:"Blanc de Blancs Champagne is...",o:["Made from black grapes only","Made from 100% Chardonnay","A non-vintage blend","Aged without dosage"],a:1,e:"Blanc de Blancs ('white from whites') is exclusively Chardonnay."},
+{ci:4,q:"In the WSET L3 tasting exam, you must assess...",o:["One wine in 15 minutes","Two wines (white + red) in 30 minutes","Three wines in 45 minutes","Five wines in 60 minutes"],a:1,e:"Unit 2 requires blind tasting of two wines using SAT in 30 minutes."},
+{ci:4,q:"Which soil type is associated with Chablis?",o:["Granite","Terra rossa","Kimmeridgian limestone and clay","Slate"],a:2,e:"Chablis' Kimmeridgian limestone gives wines their mineral character."},
+{ci:4,q:"Minimum ageing requirement for Barolo DOCG?",o:["1 year","2 years","3 years (including 18 months in oak)","5 years"],a:2,e:"Barolo requires minimum 38 months ageing, of which 18 months in oak."}
+];
+
+// ── BADGES ──
+const B=[
+{id:0,n:"First Sip",i:"🥂",d:"Complete your first lesson"},
+{id:1,n:"Grape Explorer",i:"🍇",d:"Complete 10 lessons"},
+{id:2,n:"Quiz Master",i:"🧠",d:"Score 80%+ on 3 quizzes"},
+{id:3,n:"Tasting Pro",i:"👃",d:"Log 5 tasting notes"},
+{id:4,n:"Region Rover",i:"🌍",d:"Complete Wine Regions course"},
+{id:5,n:"Streak Star",i:"🔥",d:"Achieve a 7-day streak"},
+{id:6,n:"Wine Scholar",i:"🎓",d:"Complete WSET Level 2"},
+{id:7,n:"Grand Cru",i:"🏆",d:"Earn 1000 points"},
+{id:8,n:"Sommelier",i:"🍷",d:"Complete all 7 courses"},
+{id:9,n:"Community Leader",i:"💬",d:"Post 10 discussions"}
+];
+
+// ── EVENTS ──
+const EV=[
+{dt:"2026-06-09",t:"WSET Level 1 Classroom Day",ty:"exam",d:"Full-day intensive + 30 MCQ exam. Bring photo ID.",l:"Joval Melbourne, Abbotsford"},
+{dt:"2026-06-15",t:"Barossa Shiraz Masterclass",ty:"masterclass",d:"Guided tasting of 8 premium Barossa wines with Hilary Fordham DipWSET.",l:"Joval Melbourne"},
+{dt:"2026-06-22",t:"WSET Level 2 — Week 1 of 3",ty:"exam",d:"First classroom session covering LO1–LO2.",l:"Joval Melbourne"},
+{dt:"2026-06-29",t:"WSET Level 2 — Week 2 of 3",ty:"exam",d:"Session covering LO3–LO4: grape varieties and regions.",l:"Joval Melbourne"},
+{dt:"2026-07-04",t:"Winter Wine Dinner",ty:"tasting",d:"Five-course dinner with matched wines. $150pp.",l:"Mezzanine, Abbotsford"},
+{dt:"2026-07-06",t:"WSET Level 2 — Week 3 + Exam",ty:"exam",d:"Final session + 50 MCQ exam (55% pass mark).",l:"Joval Melbourne"},
+{dt:"2026-07-12",t:"Blind Tasting Workshop",ty:"workshop",d:"Hands-on SAT practice — 8 wines blind. All levels welcome.",l:"Joval Melbourne"},
+{dt:"2026-07-20",t:"WSET Level 3 Tasting Masterclass",ty:"workshop",d:"Mandatory tasting prep for L3 candidates. 12 wines.",l:"Joval Melbourne"},
+{dt:"2026-08-03",t:"WSET Level 3 — Intensive Week",ty:"exam",d:"5-day intensive. Exam day 5: 50 MCQ + short-answer + blind tasting.",l:"Joval Melbourne"},
+{dt:"2026-08-15",t:"Australian Wine Regions Tour",ty:"masterclass",d:"Virtual guided tasting through 6 Australian GIs.",l:"Online / Zoom"}
+];
+
+// ── COMMUNITY ──
+const TH=[
+{id:1,a:"Hilary Fordham",t:"Welcome to JSOW Community!",b:"This is your space to discuss wine, ask questions, and connect with fellow enthusiasts. Be kind, be curious, and share your journey!",dt:"2026-05-20",u:24,r:[{a:"Sarah M.",b:"So excited! Just enrolled in WSET L1. Any tips for the exam?",dt:"2026-05-21"},{a:"James K.",b:"Looking forward to sharing Barossa tasting notes.",dt:"2026-05-22"},{a:"Hilary Fordham",b:"Welcome both! Sarah — focus on the SAT method and grape variety flashcards.",dt:"2026-05-22"}]},
+{id:2,a:"Michael T.",t:"Best Aussie Shiraz under $30?",b:"Looking for everyday Shiraz recommendations from Barossa or McLaren Vale.",dt:"2026-05-25",u:15,r:[{a:"David F.",b:"Penfolds Koonunga Hill — consistently great. Also try Grant Burge Benchmark.",dt:"2026-05-25"},{a:"Lisa W.",b:"Hentley Farm The Beast from Barossa — incredible for the price.",dt:"2026-05-26"},{a:"Tom B.",b:"Jim Barry The Lodge Hill Shiraz from Clare Valley. Beautiful peppery style.",dt:"2026-05-27"}]},
+{id:3,a:"Emma L.",t:"Tips for WSET Level 2 exam?",b:"Starting prep next month. How much study time did everyone need?",dt:"2026-05-28",u:18,r:[{a:"Tom B.",b:"About 2 hours per week for 8 weeks. Focus on SAT and grape flashcards.",dt:"2026-05-29"},{a:"Sarah M.",b:"I used the Brainscape WSET app — really helped with spaced repetition!",dt:"2026-05-30"}]},
+{id:4,a:"David F.",t:"Burgundy vs Barossa Pinot — discuss!",b:"Had a 2019 Domaine Drouhin alongside a 2020 Yarra Valley Pinot last night. Completely different expressions of the same grape.",dt:"2026-05-30",u:21,r:[{a:"Emma L.",b:"That's exactly what WSET L2 is about! Climate and winemaking make all the difference.",dt:"2026-05-31"}]}
+];
+
+// ── LEADERBOARD ──
+const LB=[{n:"Sarah M.",p:2450,b:7},{n:"James K.",p:1980,b:6},{n:"Emma L.",p:1720,b:5},{n:"Tom B.",p:1350,b:5},{n:"David F.",p:980,b:4},{n:"Lisa W.",p:750,b:3},{n:"Mark R.",p:520,b:2},{n:"You",p:150,b:1}];
+
+// ── JOURNEY MAP ──
+const JR=[{i:"🍇",n:"Fundamentals",c:1},{i:"🏅",n:"WSET L1",c:2},{i:"🇫🇷",n:"France",c:6},{i:"🇮🇹",n:"Italy",c:6},{i:"🇦🇺",n:"Australia",c:6},{i:"🇳🇿",n:"NZ",c:6},{i:"🍽️",n:"Pairing",c:5},{i:"🎓",n:"WSET L2",c:3},{i:"🏆",n:"WSET L3",c:4},{i:"👑",n:"Grand Cru",c:4}];
+
+// ── STUDENTS (for teacher/admin) ──
+const STUDENTS=[
+{id:1,name:"Sarah Mitchell",email:"sarah.m@example.com",enrolled:[1,2,3],lessons:28,points:2450,lastActive:"2026-05-31",status:"active",wset:"Level 2",notes:3,quizAvg:85},
+{id:2,name:"James Kim",email:"james.k@example.com",enrolled:[1,2,5],lessons:22,points:1980,lastActive:"2026-05-30",status:"active",wset:"Level 2",notes:5,quizAvg:78},
+{id:3,name:"Emma Lawrence",email:"emma.l@example.com",enrolled:[2,3],lessons:18,points:1720,lastActive:"2026-05-29",status:"active",wset:"Level 2",notes:2,quizAvg:82},
+{id:4,name:"Tom Bradley",email:"tom.b@example.com",enrolled:[1,3,6],lessons:15,points:1350,lastActive:"2026-05-28",status:"active",wset:"Level 1",notes:4,quizAvg:74},
+{id:5,name:"David Foster",email:"david.f@example.com",enrolled:[1,5],lessons:11,points:980,lastActive:"2026-05-25",status:"active",wset:"Level 1",notes:1,quizAvg:71},
+{id:6,name:"Lisa Wong",email:"lisa.w@example.com",enrolled:[1,7],lessons:8,points:750,lastActive:"2026-05-20",status:"inactive",wset:"Level 1",notes:2,quizAvg:68},
+{id:7,name:"Mark Reynolds",email:"mark.r@example.com",enrolled:[1],lessons:4,points:520,lastActive:"2026-05-15",status:"inactive",wset:"None",notes:0,quizAvg:62},
+{id:8,name:"Angela Rossi",email:"angela.r@example.com",enrolled:[2,3,4],lessons:42,points:3200,lastActive:"2026-06-01",status:"active",wset:"Level 3",notes:8,quizAvg:91},
+{id:9,name:"Chris Patel",email:"chris.p@example.com",enrolled:[1,2],lessons:14,points:890,lastActive:"2026-05-27",status:"active",wset:"Level 1",notes:1,quizAvg:73},
+{id:10,name:"Nina Svensson",email:"nina.s@example.com",enrolled:[2,3,5,6],lessons:35,points:2100,lastActive:"2026-05-31",status:"active",wset:"Level 2",notes:6,quizAvg:88}
+];
+
+let teacherQuizzes=JSON.parse(JSON.stringify(Q));
+
+// ── STATE ──
+const DEF={enrolled:[1,2],progress:{},points:150,streak:3,cart:[],cq:[],tn:[],certs:[],ub:[0],
+  threads:JSON.parse(JSON.stringify(TH)),cpn:null,cm:5,cy:2026,et:null,
+  curCourse:null,curMi:0,curLi:0,quizQs:[],quizIdx:0,quizSel:-1,quizScore:0,quizTimer:0,quizInt:null,
+  user:null,role:null,
+  tStudents:JSON.parse(JSON.stringify(STUDENTS)),
+  tMessages:[
+    {id:1,from:"Sarah Mitchell",subj:"Question about Chardonnay lesson",body:"Hi Hilary, could you clarify the difference between Chablis and Meursault styles?",date:"2026-05-30",read:false,reply:""},
+    {id:2,from:"Tom Bradley",subj:"Missed classroom session",body:"I wasn't able to attend the June 22 session. Is there a recording available?",date:"2026-05-29",read:true,reply:"Hi Tom, yes — the recording is now available in the WSET L2 course under Week 1."},
+    {id:3,from:"Emma Lawrence",subj:"Tasting note feedback request",body:"Could you review my latest Barossa Shiraz tasting note? I'm not sure my palate assessment is detailed enough for L2.",date:"2026-05-28",read:false,reply:""}
+  ],
+  aPromos:[
+    {id:1,code:"JSOW10",disc:10,uses:45,maxUses:100,exp:"2026-12-31",status:"Active"},
+    {id:2,code:"WINE20",disc:20,uses:23,maxUses:50,exp:"2026-08-31",status:"Active"},
+    {id:3,code:"FIRSTSIP",disc:15,uses:112,maxUses:200,exp:"2026-06-30",status:"Active"},
+    {id:4,code:"WSET2025",disc:25,uses:67,maxUses:100,exp:"2025-12-31",status:"Expired"},
+    {id:5,code:"HILARY50",disc:50,uses:3,maxUses:5,exp:"2026-07-31",status:"Active"}
+  ],
+  aEvents:JSON.parse(JSON.stringify(EV))
+};
+let S;
+function loadState(){try{const s=localStorage.getItem('jsow3');S=s?Object.assign(JSON.parse(JSON.stringify(DEF)),JSON.parse(s)):JSON.parse(JSON.stringify(DEF))}catch(e){S=JSON.parse(JSON.stringify(DEF))}}
+function saveState(){try{localStorage.setItem('jsow3',JSON.stringify(S))}catch(e){}}
+// ═══════════════════════════════════════════
+// CORE FUNCTIONS (all bugs fixed)
+// ═══════════════════════════════════════════
+
+function $(id){return document.getElementById(id)}
+function lk(c,m,l){return c+'-'+m+'-'+l}
+function gp(cid){var co=C.find(function(x){return x.id===cid});if(!co)return 0;var t=0,d=0;co.m.forEach(function(m,mi){m.l.forEach(function(l,li){t++;if(S.progress[lk(cid,mi,li)])d++})});return t?Math.round(d/t*100):0}
+function tl(){return Object.values(S.progress).filter(function(v){return v}).length}
+function icc(cid){return gp(cid)===100}
+function updCC(){var e=$('cc');if(e){e.textContent=S.cart.length;e.style.display=S.cart.length?'flex':'none'}}
+function toast(msg){var t=$('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3000)}
+function toggleN(){var d=$('ndd');if(d)d.classList.toggle('sh')}
+function showModal(html){var o=$('modal'),b=$('modal-body');if(o&&b){b.innerHTML=html;o.classList.add('show')}}
+function closeModal(){var o=$('modal');if(o)o.classList.remove('show')}
+function medal(i){if(i===0)return '🥇 ';if(i===1)return '🥈 ';if(i===2)return '🥉 ';return '#'+(i+1)}
+document.addEventListener('click',function(e){if(e.target.id==='modal')closeModal()});
+
+// ── LOGIN ──
+function doLogin(){
+  var email=($('l-email')||{}).value||'';
+  var pass=($('l-pass')||{}).value||'';
+  var user=USERS.find(function(u){return u.email===email.toLowerCase().trim()&&u.pass===pass});
+  if(!user){$('l-err').textContent='Invalid email or password';return}
+  S.user=user;S.role=user.role;saveState();showApp(user);toast('Welcome, '+user.name+'!');
+}
+function showApp(user){
+  $('login').style.display='none';
+  $('topnav').style.display='flex';
+  $('mainwrap').style.display='block';
+  if(user.role==='teacher'||user.role==='admin')$('n-teach').style.display='inline';
+  if(user.role==='admin')$('n-admin').style.display='inline';
+  $('uav').textContent=user.initials;
+  $('wmsg').textContent='Welcome back, '+user.name.split(' ')[0];
+  if($('pn'))$('pn').value=user.name;
+  if($('pe'))$('pe').value=user.email;
+  renderDash();renderCat();
+}
+function doLogout(){
+  S.user=null;S.role=null;saveState();
+  $('login').style.display='flex';$('topnav').style.display='none';$('mainwrap').style.display='none';
+  $('n-teach').style.display='none';$('n-admin').style.display='none';
+}
+function showRegister(){
+  showModal('<h2>Request Access</h2>'+
+    '<p style="color:var(--t2);margin-bottom:16px">Complete the form below and our team will set up your account within 24 hours.</p>'+
+    '<div class="row"><div class="field"><label class="lbl">Full Name</label><input class="inp" id="reg-name" placeholder="Your full name"></div>'+
+    '<div class="field"><label class="lbl">Email</label><input class="inp" id="reg-email" placeholder="your@email.com"></div></div>'+
+    '<div class="row"><div class="field"><label class="lbl">Organisation</label><input class="inp" placeholder="Company or venue name"></div>'+
+    '<div class="field"><label class="lbl">Interest</label><select class="inp"><option>Wine Enthusiast</option><option>Hospitality Professional</option><option>Wine Trade</option><option>Sommelier Track</option><option>Educator</option></select></div></div>'+
+    '<div class="field"><label class="lbl">WSET Level</label><select class="inp"><option>Level 1</option><option>Level 2</option><option>Level 3</option><option>Not sure yet</option></select></div>'+
+    '<div class="field"><label class="lbl">Message (optional)</label><textarea class="ta" placeholder="Tell us about your wine education goals..."></textarea></div>'+
+    '<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g btn-l" onclick="toast(\'Request submitted! We will be in touch within 24 hours.\');closeModal()">Submit Request</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>');
+}
+
+// ── NAVIGATION ──
+function go(pg){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on')});
+  var el=$('pg-'+pg);if(el)el.classList.add('on');
+  document.querySelectorAll('.nm a').forEach(function(a){a.classList.remove('on')});
+  var nl=$('n-'+pg);if(nl)nl.classList.add('on');
+  var d=$('ndd');if(d)d.classList.remove('sh');
+  window.scrollTo({top:0,behavior:'smooth'});
+  var renders={dash:renderDash,cat:renderCat,journal:renderJournal,certs:renderCerts,gam:renderGam,cart:renderCart,com:renderCom,prof:renderProf,teach:renderTeach,admin:renderAdmin,cal:renderCal,play:renderPlayer};
+  if(renders[pg]){renders[pg]();}
+}
+
+// ── DASHBOARD ──
+function renderDash(){
+  if($('d-e'))$('d-e').textContent=S.enrolled.length;
+  if($('d-l'))$('d-l').textContent=tl();
+  if($('d-p'))$('d-p').textContent=S.points;
+  if($('d-s'))$('d-s').textContent=S.streak;
+  var dc=$('dc');
+  if(dc){
+    if(!S.enrolled.length){dc.innerHTML='<div class="card" style="color:var(--t2);padding:30px;text-align:center">No courses enrolled yet. <a onclick="go(\'cat\')">Browse courses →</a></div>';return}
+    var h='<div class="ga">';
+    S.enrolled.forEach(function(cid){var co=C.find(function(x){return x.id===cid});if(!co)return;var p=gp(cid);
+      h+='<div class="card" style="cursor:pointer" onclick="viewCourse('+cid+')">'+
+        '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><span style="font-size:28px">'+co.ic+'</span><div><div style="font-weight:600">'+co.t+'</div><div style="font-size:12px;color:var(--t3)">'+co.du+'</div></div></div>'+
+        '<div class="prog"><div class="pf2" style="width:'+p+'%"></div></div>'+
+        '<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-top:4px"><span>'+p+'%</span>'+(icc(cid)?'<span style="color:var(--gn)">✅ Complete</span>':'<span style="color:var(--g)">Continue →</span>')+'</div></div>'});
+    dc.innerHTML=h+'</div>';
+  }
+  var da=$('da');
+  if(da){
+    var a=[];
+    if(tl()>0)a.push('✅ Completed '+tl()+' lesson'+(tl()>1?'s':''));
+    if(S.tn.length)a.push('📝 Logged '+S.tn.length+' tasting note'+(S.tn.length>1?'s':''));
+    if(S.ub.length)a.push('🏅 Earned '+S.ub.length+' badge'+(S.ub.length>1?'s':''));
+    if(S.points)a.push('⭐ '+S.points+' points earned');
+    if(S.streak)a.push('🔥 '+S.streak+'-day learning streak');
+    if(!a.length)a.push('Start learning to see your activity here!');
+    da.innerHTML=a.map(function(x){return '<div class="card" style="margin-bottom:8px;padding:14px 18px;font-size:14px">'+x+'</div>'}).join('');
+  }
+}
+
+// ── CATALOGUE ──
+var catF='all';
+function filt(f,el){catF=f;if(el){el.parentElement.querySelectorAll('.btn').forEach(function(b){b.className='btn btn-ghost btn-s'});el.className='btn btn-o btn-s'}renderCat()}
+function renderCat(){
+  var el=$('cg');if(!el)return;
+  var courses=C;
+  if(catF==='free')courses=C.filter(function(c){return c.p===0});
+  else if(catF!=='all')courses=C.filter(function(c){return c.lv===catF});
+  el.innerHTML=courses.map(function(co){
+    var en=S.enrolled.includes(co.id);var lc=co.lv==='beginner'?'lvl-b':co.lv==='intermediate'?'lvl-i':'lvl-a';
+    var totalL=co.m.reduce(function(s,m){return s+m.l.length},0);
+    return '<div class="card" style="padding:0;overflow:hidden">'+
+      '<div class="cc-img" style="background:'+co.gr+'"><span style="position:relative;z-index:1">'+co.ic+'</span></div>'+
+      '<div class="cc-body">'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span class="cc-price">'+co.pd+'</span><span class="lvl '+lc+'">'+co.lv+'</span></div>'+
+        '<div class="cc-title">'+co.t+'</div>'+
+        '<div class="cc-desc">'+co.d+'</div>'+
+        '<div class="cc-meta"><span>⭐ '+co.r+' · '+co.st+' students</span><span>'+co.m.length+' modules · '+totalL+' lessons</span></div>'+
+        (en?'<button class="btn btn-g btn-w" onclick="viewCourse('+co.id+')">Continue Learning →</button>'
+          :co.p===0?'<button class="btn btn-g btn-w" onclick="enroll('+co.id+')">Enrol — Free</button>'
+          :'<div style="display:flex;gap:8px"><button class="btn btn-g" style="flex:1" onclick="enroll('+co.id+')">Enrol Now</button><button class="btn btn-o" onclick="addToCart('+co.id+')">🛒 Cart</button></div>')+
+      '</div></div>'}).join('');
+}
+function enroll(cid){if(!S.enrolled.includes(cid)){S.enrolled.push(cid);saveState();toast('🎉 Enrolled!');renderCat()}}
+
+// ── COURSE PLAYER ──
+function viewCourse(cid){
+  if(!S.enrolled.includes(cid)){S.enrolled.push(cid);saveState()}
+  S.curCourse=cid;S.curMi=0;S.curLi=0;saveState();go('play');
+}
+function renderPlayer(){
+  var co=C.find(function(x){return x.id===S.curCourse});
+  if(!co){$('pls').innerHTML='<p style="color:var(--t2)">Select a course first.</p>';$('plm').innerHTML='';return}
+  var sb='<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><img src="logo.png" style="width:28px;height:auto;object-fit:contain"><span style="font:600 14px var(--hf);color:var(--g)">'+co.t+'</span></div>';
+  sb+='<div class="prog"><div class="pf2" style="width:'+gp(co.id)+'%"></div></div>';
+  sb+='<div style="font-size:11px;color:var(--t3);margin-bottom:16px">'+gp(co.id)+'% complete · '+co.du+'</div>';
+  co.m.forEach(function(mod,mi){
+    sb+='<div class="mh2">Module '+(mi+1)+': '+mod.n+'</div>';
+    mod.l.forEach(function(les,li){
+      var done=S.progress[lk(co.id,mi,li)];var active=mi===S.curMi&&li===S.curLi;
+      sb+='<div class="li2'+(active?' on':'')+(done?' done':'')+'" onclick="selLes('+mi+','+li+')"><span style="flex-shrink:0;width:18px;text-align:center;font-size:12px">'+(done?'✅':'○')+'</span>'+les.n+'</div>';
+    });
+  });
+  sb+='<div style="margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.04)"><button class="btn btn-o btn-w btn-s" onclick="startQuiz('+co.id+')">📝 Take Assessment</button></div>';
+  $('pls').innerHTML=sb;
+  var mod=co.m[S.curMi];var les=mod?mod.l[S.curLi]:null;if(!les){$('plm').innerHTML='';return}
+  var done=S.progress[lk(co.id,S.curMi,S.curLi)];
+  var vidHtml;
+  if(les.v){vidHtml='<div class="vid-box"><iframe src="https://www.youtube.com/embed/'+les.v+'?rel=0" allowfullscreen></iframe></div>'}
+  else{vidHtml='<div class="vid-box"><div class="vid-ph" onclick="toast(\'Video coming soon\')">▶️</div></div>'}
+  var mn=vidHtml;
+  mn+='<h2 style="font:600 28px var(--hf);color:var(--g);margin-bottom:6px">'+les.n+'</h2>';
+  mn+='<div style="font-size:12px;color:var(--t3);margin-bottom:18px">'+co.t+' → '+mod.n+' → Lesson '+(S.curLi+1)+' of '+mod.l.length+'</div>';
+  mn+='<div class="card" style="margin-bottom:20px;line-height:1.85;font-size:15px">'+les.c+'</div>';
+  mn+='<div style="display:flex;justify-content:space-between;gap:10px">';
+  if(S.curMi>0||S.curLi>0)mn+='<button class="btn btn-o" onclick="prevLes()">← Previous</button>';else mn+='<div></div>';
+  mn+='<div style="display:flex;gap:8px">';
+  if(!done)mn+='<button class="btn btn-g" onclick="compLes()">✅ Mark Complete</button>';
+  else mn+='<span style="color:var(--gn);font-size:13px;display:flex;align-items:center;gap:4px">✅ Completed</span>';
+  mn+='<button class="btn btn-o" onclick="nextLes()">Next →</button></div></div>';
+  $('plm').innerHTML=mn;
+}
+function selLes(mi,li){S.curMi=mi;S.curLi=li;renderPlayer()}
+function prevLes(){var co=C.find(function(x){return x.id===S.curCourse});if(!co)return;if(S.curLi>0)S.curLi--;else if(S.curMi>0){S.curMi--;S.curLi=co.m[S.curMi].l.length-1}renderPlayer()}
+function nextLes(){var co=C.find(function(x){return x.id===S.curCourse});if(!co)return;if(S.curLi<co.m[S.curMi].l.length-1)S.curLi++;else if(S.curMi<co.m.length-1){S.curMi++;S.curLi=0}renderPlayer()}
+function compLes(){S.progress[lk(S.curCourse,S.curMi,S.curLi)]=true;S.points+=25;saveState();toast('✅ +25 points!');checkBadges();renderPlayer()}
+
+// ── QUIZ ──
+function startQuiz(cid){
+  S.quizQs=Q.filter(function(q){return q.ci===cid}).sort(function(){return Math.random()-.5});
+  if(!S.quizQs.length)S.quizQs=Q.sort(function(){return Math.random()-.5}).slice(0,10);
+  S.quizIdx=0;S.quizScore=0;S.quizSel=-1;if(S.quizInt)clearInterval(S.quizInt);go('quiz');renderQ();
+}
+function renderQ(){
+  var qb=$('qb');if(!qb||!S.quizQs.length)return;var q=S.quizQs[S.quizIdx];S.quizSel=-1;S.quizTimer=45;
+  if(S.quizInt)clearInterval(S.quizInt);
+  S.quizInt=setInterval(function(){S.quizTimer--;var te=$('qt');if(te)te.textContent=S.quizTimer+'s';if(S.quizTimer<=0){clearInterval(S.quizInt);submitAns()}},1000);
+  var h='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">'+
+    '<span style="color:var(--t2);font-size:13px">Question '+(S.quizIdx+1)+' of '+S.quizQs.length+'</span>'+
+    '<span id="qt" style="font:700 22px var(--hf);color:var(--g)">'+S.quizTimer+'s</span></div>';
+  h+='<div class="prog" style="margin-bottom:16px"><div class="pf2" style="width:'+(S.quizIdx/S.quizQs.length*100)+'%"></div></div>';
+  h+='<h3 style="font-size:18px;margin-bottom:20px;line-height:1.5">'+q.q+'</h3>';
+  q.o.forEach(function(opt,i){h+='<div class="q-opt" id="qo-'+i+'" onclick="selOpt('+i+')">'+String.fromCharCode(65+i)+'. '+opt+'</div>'});
+  h+='<div style="margin-top:20px;text-align:right"><button class="btn btn-g" onclick="submitAns()">Submit Answer</button></div><div id="qfb" style="margin-top:14px"></div>';
+  qb.innerHTML=h;
+}
+function selOpt(i){S.quizSel=i;document.querySelectorAll('.q-opt').forEach(function(o){o.classList.remove('sel')});var e=$('qo-'+i);if(e)e.classList.add('sel')}
+function submitAns(){
+  if(S.quizInt)clearInterval(S.quizInt);var q=S.quizQs[S.quizIdx];var ok=S.quizSel===q.a;if(ok)S.quizScore++;
+  q.o.forEach(function(o,i){var e=$('qo-'+i);if(!e)return;e.style.pointerEvents='none';if(i===q.a)e.classList.add('ok');else if(i===S.quizSel&&!ok)e.classList.add('no')});
+  var fb=$('qfb');
+  if(fb)fb.innerHTML='<div class="card" style="border-left:3px solid '+(ok?'var(--gn)':'var(--r)')+'"><strong>'+(ok?'✅ Correct!':'❌ Incorrect')+'</strong><br><span style="font-size:13px;color:var(--t2)">'+q.e+'</span></div>'+
+    '<div style="margin-top:14px;text-align:right"><button class="btn btn-g" onclick="nextQ()">'+(S.quizIdx<S.quizQs.length-1?'Next Question →':'See Results')+'</button></div>';
+}
+function nextQ(){S.quizIdx++;if(S.quizIdx>=S.quizQs.length)showResults();else renderQ()}
+function showResults(){
+  var pct=Math.round(S.quizScore/S.quizQs.length*100);var pass=pct>=55;
+  S.points+=S.quizScore*10;if(pass)S.cq.push(Date.now());saveState();checkBadges();
+  $('qb').innerHTML='<div style="text-align:center;padding:30px">'+
+    '<div style="font-size:52px;margin-bottom:14px">'+(pass?'🎉':'📚')+'</div>'+
+    '<h2 style="font:700 28px var(--hf);color:var(--g);margin-bottom:8px">'+(pass?'Congratulations — You Passed!':'Keep Studying')+'</h2>'+
+    '<p style="font-size:18px;margin-bottom:6px">Score: <strong style="color:var(--g)">'+S.quizScore+'/'+S.quizQs.length+' ('+pct+'%)</strong></p>'+
+    '<p style="font-size:14px;color:var(--t2);margin-bottom:8px">'+(pass?'Pass mark: 55% (WSET standard)':'You need 55% to pass. Review and try again.')+'</p>'+
+    '<p style="font-size:14px;color:var(--g);margin-bottom:24px">+'+S.quizScore*10+' points earned</p>'+
+    '<div style="display:flex;gap:10px;justify-content:center"><button class="btn btn-g" onclick="go(\''+(S.curCourse?'play':'cat')+'\')">Back to Course</button><button class="btn btn-o" onclick="startQuiz('+(S.curCourse||0)+')">Retake</button></div></div>';
+}
+
+// ── TASTING JOURNAL ──
+function renderJournal(){
+  var el=$('jnl');if(!el)return;
+  if(!S.tn.length){el.innerHTML='<div class="card" style="color:var(--t2);text-align:center;padding:30px">No tasting notes yet. Start recording!</div>';return}
+  el.innerHTML=S.tn.slice().reverse().map(function(n,ri){
+    var idx=S.tn.length-1-ri;var stars='★'.repeat(n.rt)+'☆'.repeat(5-n.rt);
+    return '<div class="card" style="margin-bottom:10px">'+
+      '<div style="display:flex;justify-content:space-between"><div><strong>'+n.n+'</strong> '+(n.v?'('+n.v+')':'')+'</div><button onclick="delNote('+idx+')" class="btn-ghost" style="color:var(--r)">🗑️</button></div>'+
+      '<div style="font-size:12px;color:var(--t3);margin:4px 0">'+(n.g||'')+' '+(n.r?'· '+n.r:'')+' · '+new Date(n.dt).toLocaleDateString('en-AU')+'</div>'+
+      '<div style="color:var(--g);margin-bottom:8px">'+stars+'</div>'+
+      (n.a?'<div style="font-size:13px;margin-bottom:4px"><strong style="color:var(--g)">Appearance:</strong> '+n.a+'</div>':'')+
+      (n.no?'<div style="font-size:13px;margin-bottom:4px"><strong style="color:var(--g)">Nose:</strong> '+n.no+'</div>':'')+
+      (n.p?'<div style="font-size:13px;margin-bottom:4px"><strong style="color:var(--g)">Palate:</strong> '+n.p+'</div>':'')+
+      (n.c?'<div style="font-size:13px"><strong style="color:var(--g)">Conclusion:</strong> '+n.c+'</div>':'')+
+    '</div>'}).join('');
+}
+function saveNote(e){
+  e.preventDefault();var g=function(id){return ($('tn-'+id)||{}).value||''};var w=g('n');if(!w){toast('Enter wine name');return}
+  S.tn.push({n:w,v:g('v'),g:g('g'),r:g('r'),a:g('a'),no:g('no'),p:g('p'),c:g('c'),rt:parseInt(g('rt'))||4,dt:new Date().toISOString()});
+  S.points+=15;saveState();renderJournal();
+  ['n','v','g','r','a','no','p','c'].forEach(function(id){var el=$('tn-'+id);if(el)el.value=''});
+  toast('📝 Saved! +15 points');checkBadges();
+}
+function delNote(i){S.tn.splice(i,1);saveState();renderJournal();toast('Note deleted')}
+
+// ── CERTIFICATES ──
+function renderCerts(){
+  var el=$('clist');if(!el)return;var done=S.enrolled.filter(function(cid){return icc(cid)});
+  if(!done.length){el.innerHTML='<div style="text-align:center;padding:50px"><div style="font-size:52px;margin-bottom:14px">🎓</div><h2 style="font:600 24px var(--hf);color:var(--t)">No Certificates Yet</h2><p style="color:var(--t2);margin-top:8px">Complete all lessons in a course to earn your certificate</p></div>';return}
+  el.innerHTML=done.map(function(cid){var co=C.find(function(x){return x.id===cid});if(!co)return '';var code='JSOW-'+String(cid).padStart(3,'0')+'-'+Date.now().toString(36).toUpperCase().slice(-6);var name=(S.user?S.user.name:'Wine Enthusiast');
+    return '<div class="cert"><img src="logo.png" style="width:100px;height:auto;object-fit:contain;margin:0 auto 16px;display:block;background:transparent">'+
+      '<div style="font:300 12px var(--bf);color:var(--t3);text-transform:uppercase;letter-spacing:3px;margin-bottom:6px">Joval School of Wine</div>'+
+      '<h2 style="font:700 28px var(--hf);color:var(--g);margin-bottom:16px">Certificate of Completion</h2>'+
+      '<p style="font-size:14px;color:var(--t2)">This certifies that</p>'+
+      '<h3 style="font:700 26px var(--hf);color:var(--t);margin:12px 0">'+name+'</h3>'+
+      '<p style="font-size:14px;color:var(--t2)">has successfully completed</p>'+
+      '<h3 style="font:600 20px var(--hf);color:var(--gl);margin:12px 0">'+co.t+'</h3>'+
+      '<p style="color:var(--t3);font-size:13px;margin-top:16px">'+new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})+'</p>'+
+      '<div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(201,168,76,.12);font-size:11px;color:var(--t3)">Hilary Fordham DipWSET — Group Wine Ambassador & Educator<br>Verification: '+code+'</div>'+
+    '</div><div style="text-align:center;margin-bottom:30px"><button class="btn btn-g" onclick="window.print()">🖨️ Print Certificate</button></div>'}).join('');
+}
+
+// ── GAMIFICATION ──
+function renderGam(){
+  if($('g-p'))$('g-p').textContent=S.points;if($('g-b'))$('g-b').textContent=S.ub.length;if($('g-s'))$('g-s').textContent=S.streak;
+  var jm=$('jmap');
+  if(jm)jm.innerHTML=JR.map(function(s){var v=S.enrolled.includes(s.c);return '<div class="card" style="text-align:center;min-width:90px;padding:14px;'+(v?'border-color:var(--gborder);background:rgba(201,168,76,.03)':'opacity:.3')+'"><div style="font-size:26px">'+s.i+'</div><div style="font-size:11px;margin-top:4px;'+(v?'color:var(--g)':'color:var(--t3)')+'">'+s.n+'</div></div>'}).join('');
+  var bl=$('blist');
+  if(bl)bl.innerHTML=B.map(function(b){var u=S.ub.includes(b.id);return '<div class="card badge-card'+(u?'':' locked')+'"><div style="font-size:36px;margin-bottom:6px">'+b.i+'</div><div style="font-size:13px;font-weight:600">'+b.n+'</div><div style="font-size:11px;color:var(--t3)">'+b.d+'</div>'+(u?'<div style="font-size:10px;color:var(--g);margin-top:4px">✓ UNLOCKED</div>':'<div style="font-size:10px;color:var(--t3);margin-top:4px">🔒</div>')+'</div>'}).join('');
+  var lb=$('lbb');
+  if(lb){var entries=LB.map(function(e){return e.n==='You'?{n:e.n,p:S.points,b:S.ub.length}:e}).sort(function(a,b){return b.p-a.p});
+    lb.innerHTML=entries.map(function(e,i){var me=e.n==='You';return '<tr'+(me?' style="background:rgba(201,168,76,.04);font-weight:600"':'')+'><td>'+medal(i)+'</td><td>'+e.n+(me?' (You)':'')+'</td><td style="color:var(--g)">'+e.p.toLocaleString()+'</td><td>'+e.b+'</td></tr>'}).join('')}
+}
+function checkBadges(){
+  var checks=[
+    {id:0,t:function(){return tl()>=1}},{id:1,t:function(){return tl()>=10}},
+    {id:2,t:function(){return S.cq.length>=3}},{id:3,t:function(){return S.tn.length>=5}},
+    {id:4,t:function(){return icc(6)}},{id:5,t:function(){return S.streak>=7}},
+    {id:6,t:function(){return icc(3)}},{id:7,t:function(){return S.points>=1000}},
+    {id:8,t:function(){return C.every(function(c){return icc(c.id)})}},
+    {id:9,t:function(){return S.threads.filter(function(t){return t.a===(S.user?S.user.name:'x')}).length>=10}}
+  ];
+  checks.forEach(function(c){if(!S.ub.includes(c.id)&&c.t()){S.ub.push(c.id);var b=B.find(function(x){return x.id===c.id});if(b)toast('🏅 Badge: '+b.n+'!')}});saveState();
+}
+
+// ── CART ──
+function addToCart(cid){if(S.enrolled.includes(cid)){toast('Already enrolled');return}if(S.cart.includes(cid)){toast('Already in cart');return}S.cart.push(cid);saveState();updCC();toast('Added to cart! 🛒');renderCat()}
+function removeFromCart(cid){S.cart=S.cart.filter(function(x){return x!==cid});saveState();updCC();renderCart()}
+function renderCart(){
+  var el=$('citms'),sm=$('csum');if(!el)return;
+  if(!S.cart.length){el.innerHTML='<div class="card" style="text-align:center;padding:40px"><div style="font-size:40px;margin-bottom:10px">🛒</div><p style="color:var(--t2)">Your cart is empty</p><button class="btn btn-g" style="margin-top:14px" onclick="go(\'cat\')">Browse Courses</button></div>';if(sm)sm.innerHTML='';return}
+  var sub=0;
+  el.innerHTML=S.cart.map(function(cid){var co=C.find(function(x){return x.id===cid});if(!co)return '';sub+=co.p;
+    return '<div class="card" style="display:flex;align-items:center;gap:16px;margin-bottom:10px"><div style="font-size:30px">'+co.ic+'</div><div style="flex:1"><div style="font-weight:600">'+co.t+'</div><div style="font-size:12px;color:var(--t3)">'+co.du+' · '+co.lv+'</div></div><div class="cc-price">A'+co.pd+'</div><button onclick="removeFromCart('+cid+')" class="btn-ghost" style="color:var(--r)">🗑️</button></div>'}).join('');
+  if(sm){var disc=S.cpn?S.cpn.disc:0;var da2=Math.round(sub*disc/100);var gst=Math.round((sub-da2)*.1);var tot=sub-da2+gst;
+    var s='<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px"><span>Subtotal</span><span>A$'+sub.toLocaleString()+'</span></div>';
+    if(disc)s+='<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px;color:var(--g)"><span>Discount ('+disc+'%)</span><span>-A$'+da2.toLocaleString()+'</span></div>';
+    s+='<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px"><span>GST (10%)</span><span>A$'+gst.toLocaleString()+'</span></div>';
+    s+='<div style="display:flex;justify-content:space-between;padding:10px 0;margin-top:8px;border-top:2px solid var(--g);font:700 20px var(--bf);color:var(--g)"><span>Total</span><span>A$'+tot.toLocaleString()+'</span></div>';
+    sm.innerHTML=s}
+}
+function applyCpn(){var code=($('cpn')||{}).value||'';var msg=$('cmsg');var found=S.aPromos.find(function(p){return p.code===code.toUpperCase().trim()&&p.status==='Active'});
+  if(found){S.cpn=found;saveState();renderCart();if(msg)msg.innerHTML='<span style="color:var(--gn)">✅ '+found.disc+'% discount applied!</span>'}
+  else{S.cpn=null;saveState();if(msg)msg.innerHTML='<span style="color:var(--r)">❌ Invalid or expired coupon</span>'}}
+function checkout(){S.cart.forEach(function(cid){if(!S.enrolled.includes(cid))S.enrolled.push(cid)});S.cart=[];S.cpn=null;saveState();updCC();toast('🎉 Payment successful!');go('ok')}
+
+// ── COMMUNITY ──
+function renderCom(){
+  var el=$('cth');if(!el)return;
+  el.innerHTML=S.threads.map(function(th,i){
+    var exp=S.et===th.id;
+    var h='<div class="card" style="margin-bottom:12px">'+
+      '<div style="display:flex;justify-content:space-between;align-items:start">'+
+        '<div style="cursor:pointer;flex:1" onclick="toggleTh('+th.id+')">'+
+          '<div style="font-weight:600;font-size:15px">'+th.t+'</div>'+
+          '<div style="font-size:12px;color:var(--t3);margin-top:2px">'+th.a+' · '+th.dt+' · 👍 '+th.u+' · 💬 '+(th.r||[]).length+'</div>'+
+        '</div><button onclick="upvote('+i+')" class="btn-ghost">👍</button></div>'+
+      '<p style="font-size:14px;margin-top:10px;line-height:1.6;color:var(--t2)">'+th.b+'</p>';
+    if(exp){
+      (th.r||[]).forEach(function(r){h+='<div class="reply"><strong>'+r.a+'</strong> <span style="font-size:11px;color:var(--t3)">'+r.dt+'</span><p style="margin-top:4px">'+r.b+'</p></div>'});
+      h+='<div style="margin-top:12px;display:flex;gap:8px"><input class="inp" id="rpl-'+th.id+'" placeholder="Write a reply..." style="flex:1;padding:8px 14px"><button class="btn btn-g btn-s" onclick="postReply('+th.id+')">Reply</button></div>'}
+    return h+'</div>'}).join('');
+}
+function toggleTh(id){S.et=S.et===id?null:id;renderCom()}
+function postTh(){var t=($('ptt')||{}).value||'';var b=($('ppb')||{}).value||'';if(!t||!b){toast('Fill in title and body');return}
+  S.threads.unshift({id:Date.now(),a:S.user?S.user.name:'Student',t:t,b:b,dt:new Date().toISOString().split('T')[0],u:0,r:[]});
+  S.points+=10;saveState();renderCom();if($('ptt'))$('ptt').value='';if($('ppb'))$('ppb').value='';toast('💬 Posted! +10 points');checkBadges()}
+function postReply(tid){var inp=document.getElementById('rpl-'+tid);if(!inp||!inp.value.trim())return;var th=S.threads.find(function(t){return t.id===tid});if(!th)return;if(!th.r)th.r=[];
+  th.r.push({a:S.user?S.user.name:'Student',b:inp.value.trim(),dt:new Date().toISOString().split('T')[0]});S.points+=5;saveState();renderCom();toast('Reply posted! +5 pts')}
+function upvote(i){S.threads[i].u++;saveState();renderCom()}
+
+// ── PROFILE ──
+function renderProf(){
+  var pfs=$('pfs'),pfc=$('pfc');
+  if(pfs){var stats=[['Enrolled',S.enrolled.length],['Lessons Done',tl()],['Tasting Notes',S.tn.length],['Certificates',S.enrolled.filter(function(c){return icc(c)}).length],['Points',S.points.toLocaleString()],['Streak',S.streak+' days'],['Quizzes Passed',S.cq.length],['Badges',S.ub.length+'/'+B.length]];
+    pfs.innerHTML=stats.map(function(s){return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.02);font-size:14px"><span>'+s[0]+'</span><span style="color:var(--g);font-weight:600">'+s[1]+'</span></div>'}).join('')}
+  if(pfc){if(!S.enrolled.length){pfc.innerHTML='<p style="color:var(--t2)">No courses yet.</p>';return}
+    pfc.innerHTML=S.enrolled.map(function(cid){var co=C.find(function(x){return x.id===cid});if(!co)return '';var p=gp(cid);
+      return '<div class="card" style="cursor:pointer" onclick="viewCourse('+cid+')">'+
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:22px">'+co.ic+'</span><span style="font-weight:600">'+co.t+'</span></div>'+
+        '<div class="prog"><div class="pf2" style="width:'+p+'%"></div></div>'+
+        '<div style="font-size:12px;color:var(--t3);margin-top:4px">'+p+'% complete'+(icc(cid)?' ✅':'')+'</div></div>'}).join('')}
+}
+
+// ── CALENDAR ──
+function renderCal(){
+  var mn=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  if($('calt'))$('calt').textContent=mn[S.cm]+' '+S.cy;
+  var cd=$('cdays');if(!cd)return;
+  var first=new Date(S.cy,S.cm,1).getDay();var days=new Date(S.cy,S.cm+1,0).getDate();var adj=first===0?6:first-1;
+  var h='';for(var i=0;i<adj;i++)h+='<div class="cal-day"></div>';
+  for(var d=1;d<=days;d++){
+    var ds=S.cy+'-'+String(S.cm+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    var hasEv=S.aEvents.some(function(e){return e.dt===ds});var isToday=d===new Date().getDate()&&S.cm===new Date().getMonth()&&S.cy===new Date().getFullYear();
+    h+='<div class="cal-day'+(isToday?' today':'')+(hasEv?' has-ev':'')+'">'+d+'</div>'}
+  cd.innerHTML=h;
+  var cev=$('cev');if(!cev)return;
+  var mev=S.aEvents.filter(function(e){var dd=new Date(e.dt);return dd.getMonth()===S.cm&&dd.getFullYear()===S.cy});
+  if(!mev.length){cev.innerHTML='<p style="color:var(--t3)">No events this month.</p>';return}
+  cev.innerHTML=mev.map(function(e){var emoji={exam:'📝',masterclass:'🎓',tasting:'🍷',workshop:'📚'}[e.ty]||'📅';
+    return '<div class="card" style="margin-bottom:10px;display:flex;gap:16px;align-items:start"><div style="text-align:center;min-width:54px"><div style="font-size:22px">'+emoji+'</div><div style="font-size:11px;color:var(--g);margin-top:2px">'+new Date(e.dt).toLocaleDateString('en-AU',{day:'numeric',month:'short'})+'</div></div>'+
+      '<div style="flex:1"><div style="font-weight:600">'+e.t+'</div><div style="font-size:13px;color:var(--t2);margin-top:2px">'+e.d+'</div><div style="font-size:12px;color:var(--t3);margin-top:2px">📍 '+e.l+'</div></div></div>'}).join('');
+}
+function chMo(d){S.cm+=d;if(S.cm>11){S.cm=0;S.cy++}else if(S.cm<0){S.cm=11;S.cy--}saveState();renderCal()}
+
+// ── SEARCH ──
+function doSearch(q){
+  if(!q||!q.trim())return;q=q.toLowerCase().trim();go('search');
+  if($('sq'))$('sq').textContent='Results for "'+q+'"';
+  var res=[];
+  C.forEach(function(co){if(co.t.toLowerCase().includes(q)||co.d.toLowerCase().includes(q))res.push({type:'Course',title:co.t,desc:co.d,action:'viewCourse('+co.id+')'});
+    co.m.forEach(function(m){m.l.forEach(function(l){if(l.n.toLowerCase().includes(q)||l.c.toLowerCase().replace(/<[^>]*>/g,'').includes(q))res.push({type:'Lesson',title:l.n+' — '+co.t,desc:l.c.replace(/<[^>]*>/g,'').slice(0,150)+'...',action:'viewCourse('+co.id+')'})})})});
+  S.threads.forEach(function(t){if(t.t.toLowerCase().includes(q)||t.b.toLowerCase().includes(q))res.push({type:'Discussion',title:t.t,desc:t.b.slice(0,150)+'...',action:"go('com')"})});
+  var sr=$('sres');if(!sr)return;
+  if(!res.length){sr.innerHTML='<div class="card" style="color:var(--t2);text-align:center;padding:30px">No results found.</div>';return}
+  sr.innerHTML='<p style="color:var(--t2);margin-bottom:16px">'+res.length+' result'+(res.length>1?'s':'')+' found</p>'+res.map(function(r){return '<div class="card" style="margin-bottom:10px;cursor:pointer" onclick="'+r.action+'">'+
+    '<span class="lvl lvl-b" style="margin-bottom:6px;display:inline-block">'+r.type+'</span>'+
+    '<div style="font-weight:600;margin-bottom:4px">'+r.title+'</div>'+
+    '<div style="font-size:13px;color:var(--t2)">'+r.desc+'</div></div>'}).join('');
+}
+// ═══════════════════════════════════════════
+// TEACHER PANEL — Moodle-style Features
+// ═══════════════════════════════════════════
+
+var tCurTab='roster';
+function tTab(tab,el){tCurTab=tab;el.parentElement.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});el.classList.add('on');renderTeach()}
+
+function renderTeach(){
+  var ts=$('teach-stats');
+  if(ts){
+    var total=S.tStudents.length;var active=S.tStudents.filter(function(s){return s.status==='active'}).length;
+    var pending=S.tMessages.filter(function(m){return !m.read}).length;
+    var avgScore=Math.round(S.tStudents.reduce(function(s,st){return s+st.quizAvg},0)/total);
+    ts.innerHTML='<div class="card stat"><div class="sv2">'+total+'</div><div class="sl2">Students</div></div>'+
+      '<div class="card stat"><div class="sv2">'+active+'</div><div class="sl2">Active</div></div>'+
+      '<div class="card stat"><div class="sv2">'+pending+'</div><div class="sl2">Unread Messages</div></div>'+
+      '<div class="card stat"><div class="sv2">'+avgScore+'%</div><div class="sl2">Avg Quiz Score</div></div>';
+  }
+  var tc=$('tc');if(!tc)return;
+
+  if(tCurTab==='roster'){
+    var h='<div style="display:flex;justify-content:space-between;margin-bottom:16px"><input class="inp" placeholder="Search students..." oninput="filterStudents(this.value)" style="width:300px"><button class="btn btn-g" onclick="showAddStudent()">+ Add Student</button></div>';
+    h+='<div class="card" style="overflow-x:auto"><table class="tbl"><thead><tr><th>Student</th><th>Email</th><th>WSET</th><th>Courses</th><th>Lessons</th><th>Quiz Avg</th><th>Notes</th><th>Points</th><th>Status</th><th>Actions</th></tr></thead><tbody id="roster-body">';
+    S.tStudents.forEach(function(s){h+=studentRow(s)});
+    h+='</tbody></table></div>';tc.innerHTML=h;
+
+  } else if(tCurTab==='assess'){
+    var h='<div class="h3" style="margin-top:0">Gradebook — Student Performance</div>';
+    h+='<div class="card" style="overflow-x:auto"><table class="tbl"><thead><tr><th>Student</th><th>WSET L1</th><th>WSET L2</th><th>WSET L3</th><th>Avg Score</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+    S.tStudents.forEach(function(s){
+      var l1=s.enrolled.includes(2)?Math.round(60+Math.random()*35)+'%':'—';
+      var l2=s.enrolled.includes(3)?Math.round(50+Math.random()*40)+'%':'—';
+      var l3=s.enrolled.includes(4)?Math.round(45+Math.random()*45)+'%':'—';
+      var pass=s.quizAvg>=55;
+      h+='<tr><td style="font-weight:600">'+s.name+'</td><td>'+l1+'</td><td>'+l2+'</td><td>'+l3+'</td>'+
+        '<td style="color:var(--g);font-weight:600">'+s.quizAvg+'%</td>'+
+        '<td><span class="sts '+(pass?'sts-ok':'sts-w')+'">'+(pass?'Passing':'At Risk')+'</span></td>'+
+        '<td><button class="btn btn-o btn-s" onclick="showGradeOverride('+s.id+')">✏️ Grade</button> '+
+        '<button class="btn btn-ghost btn-s" onclick="showStudentDetail('+s.id+')">View</button></td></tr>';
+    });
+    h+='</tbody></table></div>';tc.innerHTML=h;
+
+  } else if(tCurTab==='mycourses'){
+    var myCourses=[C[1],C[2],C[3]];
+    var h='<div class="ga">';
+    myCourses.forEach(function(co){
+      var totalL=co.m.reduce(function(s,m){return s+m.l.length},0);
+      var enrolled=S.tStudents.filter(function(s){return s.enrolled.includes(co.id)}).length;
+      h+='<div class="card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><span style="font-size:32px">'+co.ic+'</span>'+
+        '<div><div style="font-weight:600;font-size:16px">'+co.t+'</div><div style="font-size:12px;color:var(--t3)">'+co.m.length+' modules · '+totalL+' lessons · '+enrolled+' students</div></div></div>'+
+        '<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">'+
+          '<button class="btn btn-o btn-s" onclick="showCourseEditor('+co.id+')">✏️ Edit</button>'+
+          '<button class="btn btn-o btn-s" onclick="showLessonManager('+co.id+')">📂 Lessons</button>'+
+          '<button class="btn btn-o btn-s" onclick="showCourseAnalytics('+co.id+')">📊 Analytics</button>'+
+          '<button class="btn btn-o btn-s" onclick="showVideoManager('+co.id+')">🎥 Videos</button>'+
+        '</div></div>';
+    });
+    h+='</div>';tc.innerHTML=h;
+
+  } else if(tCurTab==='builder'){
+    tc.innerHTML='<div class="card"><div class="h3" style="margin-top:0">Create New Course</div>'+
+      '<div class="row"><div class="field"><label class="lbl">Course Title</label><input class="inp" id="cb-title" placeholder="e.g. WSET Level 1 Refresher"></div>'+
+      '<div class="field"><label class="lbl">Price (AUD)</label><input class="inp" id="cb-price" type="number" placeholder="0 for free"></div></div>'+
+      '<div class="row"><div class="field"><label class="lbl">Level</label><select class="inp" id="cb-level"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></div>'+
+      '<div class="field"><label class="lbl">Duration</label><input class="inp" id="cb-dur" placeholder="e.g. 8 hours"></div></div>'+
+      '<div class="field"><label class="lbl">Description</label><textarea class="ta" id="cb-desc" placeholder="Course description..."></textarea></div>'+
+      '<div class="field"><label class="lbl">Icon Emoji</label><input class="inp" id="cb-icon" placeholder="🍇" style="width:80px"></div>'+
+      '<div class="h3">Modules & Lessons</div><div id="cb-modules"></div>'+
+      '<button class="btn btn-o btn-s" onclick="addBuilderModule()" style="margin-bottom:16px">+ Add Module</button><br>'+
+      '<button class="btn btn-g btn-l" onclick="saveCourseBuilder()">Create Course</button></div>';
+    addBuilderModule();
+
+  } else if(tCurTab==='quizedit'){
+    var h='<div style="display:flex;justify-content:space-between;margin-bottom:16px"><div class="h3" style="margin:0">Question Bank ('+teacherQuizzes.length+' questions)</div><button class="btn btn-g" onclick="showAddQuestion()">+ Add Question</button></div>';
+    h+='<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
+    C.forEach(function(co){h+='<button class="btn btn-ghost btn-s" onclick="filterQuiz('+co.id+')">'+co.ic+' '+co.t.split(' ').slice(0,3).join(' ')+'</button>'});
+    h+='<button class="btn btn-o btn-s" onclick="filterQuiz(0)">All</button></div>';
+    h+='<div class="card" style="overflow-x:auto"><table class="tbl"><thead><tr><th>Course</th><th>Question</th><th>Correct Answer</th><th>Actions</th></tr></thead><tbody id="quiz-body">';
+    teacherQuizzes.forEach(function(q,i){var co=C.find(function(x){return x.id===q.ci});
+      h+='<tr><td>'+(co?co.ic:'')+'</td><td style="max-width:400px">'+q.q+'</td><td style="color:var(--gn)">'+q.o[q.a]+'</td>'+
+        '<td><button class="btn btn-o btn-s" onclick="showEditQuestion('+i+')">✏️</button> <button class="btn btn-ghost btn-s" style="color:var(--r)" onclick="deleteQuestion('+i+')">🗑️</button></td></tr>';
+    });
+    h+='</tbody></table></div>';tc.innerHTML=h;
+
+  } else if(tCurTab==='tnotes'){
+    var wines=['Penfolds Bin 389 2021','Henschke Hill of Grace 2018','Yalumba Signature 2019','d\'Arenberg Dead Arm 2020','Torbreck RunRig 2019','Tyrrell\'s Vat 1 2017','Moss Wood Cabernet 2020','Leeuwin Art Series 2020'];
+    var reviews=S.tStudents.filter(function(s){return s.notes>0}).map(function(s,i){return {student:s.name,wine:wines[i%wines.length],rating:Math.floor(3+Math.random()*3),date:s.lastActive,status:i%2===0?'Pending':'Reviewed'}});
+    var h='<div class="card" style="overflow-x:auto"><table class="tbl"><thead><tr><th>Student</th><th>Wine</th><th>Rating</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody>';
+    reviews.forEach(function(r){h+='<tr><td style="font-weight:600">'+r.student+'</td><td>'+r.wine+'</td><td style="color:var(--g)">'+'★'.repeat(r.rating)+'☆'.repeat(5-r.rating)+'</td><td style="color:var(--t3)">'+r.date+'</td>'+
+      '<td><span class="sts '+(r.status==='Reviewed'?'sts-ok':'sts-w')+'">'+r.status+'</span></td>'+
+      '<td><button class="btn btn-o btn-s" onclick="showTastingReview(\''+r.student+'\',\''+r.wine.replace(/'/g,"\\'")+'\')">'+(r.status==='Pending'?'Review':'View')+'</button></td></tr>'});
+    h+='</tbody></table></div>';tc.innerHTML=h;
+
+  } else if(tCurTab==='messages'){
+    var h='';
+    S.tMessages.forEach(function(m,i){
+      h+='<div class="card" style="margin-bottom:10px;'+(m.read?'':'border-left:3px solid var(--g)')+'">'+
+        '<div style="display:flex;justify-content:space-between;align-items:start"><div><strong>'+m.from+'</strong> <span style="font-size:12px;color:var(--t3)">'+m.date+'</span>'+(m.read?'':'<span style="color:var(--g);font-size:11px;margin-left:8px">● NEW</span>')+'</div>'+
+        (m.read?'':'<button class="btn btn-ghost btn-s" onclick="markRead('+i+')">Mark Read</button>')+'</div>'+
+        '<div style="font-weight:600;margin:6px 0">'+m.subj+'</div>'+
+        '<p style="font-size:14px;color:var(--t2);line-height:1.6">'+m.body+'</p>'+
+        (m.reply?'<div class="reply" style="margin-top:8px"><strong>Your reply:</strong><p style="margin-top:4px">'+m.reply+'</p></div>':'')+
+        (!m.reply?'<div style="margin-top:10px;display:flex;gap:8px"><input class="inp" id="reply-'+i+'" placeholder="Type your reply..." style="flex:1;padding:8px 14px"><button class="btn btn-g btn-s" onclick="sendReply('+i+')">Send Reply</button></div>':'')+
+      '</div>';
+    });
+    tc.innerHTML=h||'<div class="card" style="text-align:center;padding:30px;color:var(--t2)">No messages yet.</div>';
+  }
+}
+
+// Teacher helpers
+function studentRow(s){
+  return '<tr><td style="font-weight:600">'+s.name+'</td><td style="color:var(--t3);font-size:12px">'+s.email+'</td><td>'+s.wset+'</td><td>'+s.enrolled.length+'</td><td>'+s.lessons+'</td><td style="color:var(--g)">'+s.quizAvg+'%</td><td>'+s.notes+'</td><td>'+s.points.toLocaleString()+'</td>'+
+    '<td><span class="sts '+(s.status==='active'?'sts-ok':'sts-w')+'">'+s.status+'</span></td>'+
+    '<td><button class="btn btn-o btn-s" onclick="showStudentDetail('+s.id+')">View</button> <button class="btn btn-ghost btn-s" onclick="toggleStudentStatus('+s.id+')">'+(s.status==='active'?'Deactivate':'Activate')+'</button></td></tr>';
+}
+function filterStudents(q){q=q.toLowerCase();var body=$('roster-body');if(!body)return;
+  var filtered=q?S.tStudents.filter(function(s){return s.name.toLowerCase().includes(q)||s.email.toLowerCase().includes(q)}):S.tStudents;
+  body.innerHTML=filtered.map(function(s){return studentRow(s)}).join('');}
+function toggleStudentStatus(id){var s=S.tStudents.find(function(x){return x.id===id});if(!s)return;s.status=s.status==='active'?'inactive':'active';saveState();renderTeach();toast(s.name+' '+(s.status==='active'?'activated':'deactivated'))}
+function showStudentDetail(id){
+  var s=S.tStudents.find(function(x){return x.id===id});if(!s)return;
+  var courses=s.enrolled.map(function(cid){var co=C.find(function(x){return x.id===cid});return co?co.t:'Unknown'}).join(', ');
+  showModal('<h2>Student Profile — '+s.name+'</h2>'+
+    '<div class="g2" style="margin-bottom:16px"><div><div class="lbl">Email</div><div>'+s.email+'</div></div><div><div class="lbl">WSET Level</div><div>'+s.wset+'</div></div><div><div class="lbl">Status</div><span class="sts '+(s.status==='active'?'sts-ok':'sts-w')+'">'+s.status+'</span></div><div><div class="lbl">Last Active</div><div>'+s.lastActive+'</div></div></div>'+
+    '<div class="lbl">Enrolled Courses</div><p style="margin-bottom:12px">'+courses+'</p>'+
+    '<div class="g4" style="margin-bottom:16px"><div class="card stat" style="padding:12px"><div class="sv2" style="font-size:24px">'+s.lessons+'</div><div class="sl2">Lessons</div></div><div class="card stat" style="padding:12px"><div class="sv2" style="font-size:24px">'+s.quizAvg+'%</div><div class="sl2">Quiz Avg</div></div><div class="card stat" style="padding:12px"><div class="sv2" style="font-size:24px">'+s.notes+'</div><div class="sl2">Notes</div></div><div class="card stat" style="padding:12px"><div class="sv2" style="font-size:24px">'+s.points.toLocaleString()+'</div><div class="sl2">Points</div></div></div>'+
+    '<button class="btn btn-o" onclick="closeModal()">Close</button>');
+}
+function showAddStudent(){showModal('<h2>Add New Student</h2><div class="row"><div class="field"><label class="lbl">Full Name</label><input class="inp" id="as-name" placeholder="Full name"></div><div class="field"><label class="lbl">Email</label><input class="inp" id="as-email" placeholder="email@example.com"></div></div><div class="row"><div class="field"><label class="lbl">WSET Level</label><select class="inp" id="as-wset"><option>None</option><option>Level 1</option><option>Level 2</option><option>Level 3</option></select></div><div class="field"><label class="lbl">Enrol in Course</label><select class="inp" id="as-course">'+C.map(function(c){return '<option value="'+c.id+'">'+c.t+'</option>'}).join('')+'</select></div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="addStudent()">Add Student</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function addStudent(){var name=($('as-name')||{}).value;var email=($('as-email')||{}).value;if(!name||!email){toast('Fill in all fields');return}S.tStudents.push({id:Date.now(),name:name,email:email,enrolled:[parseInt(($('as-course')||{}).value)],lessons:0,points:0,lastActive:new Date().toISOString().split('T')[0],status:'active',wset:($('as-wset')||{}).value,notes:0,quizAvg:0});saveState();closeModal();renderTeach();toast('Student added: '+name)}
+function showGradeOverride(id){var s=S.tStudents.find(function(x){return x.id===id});if(!s)return;showModal('<h2>Grade Override — '+s.name+'</h2><p style="color:var(--t2);margin-bottom:16px">Current average: <strong style="color:var(--g)">'+s.quizAvg+'%</strong></p><div class="field"><label class="lbl">New Grade (%)</label><input class="inp" id="go-grade" type="number" min="0" max="100" value="'+s.quizAvg+'"></div><div class="field"><label class="lbl">Reason</label><textarea class="ta" id="go-reason" placeholder="e.g. Mitigating circumstances..."></textarea></div><div style="display:flex;gap:8px"><button class="btn btn-g" onclick="applyGradeOverride('+id+')">Save Override</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function applyGradeOverride(id){var grade=parseInt(($('go-grade')||{}).value);if(isNaN(grade)||grade<0||grade>100){toast('Enter valid grade 0-100');return}var s=S.tStudents.find(function(x){return x.id===id});if(s){s.quizAvg=grade;saveState();closeModal();renderTeach();toast('Grade updated for '+s.name)}}
+function markRead(i){S.tMessages[i].read=true;saveState();renderTeach();toast('Marked as read')}
+function sendReply(i){var inp=$('reply-'+i);if(!inp||!inp.value.trim())return;S.tMessages[i].reply=inp.value.trim();S.tMessages[i].read=true;saveState();renderTeach();toast('Reply sent!')}
+
+// Course management modals
+function showCourseEditor(cid){var co=C.find(function(x){return x.id===cid});if(!co)return;showModal('<h2>Edit — '+co.t+'</h2><div class="field"><label class="lbl">Title</label><input class="inp" id="ce-title" value="'+co.t+'"></div><div class="field"><label class="lbl">Description</label><textarea class="ta" id="ce-desc">'+co.d+'</textarea></div><div class="row"><div class="field"><label class="lbl">Price</label><input class="inp" id="ce-price" type="number" value="'+co.p+'"></div><div class="field"><label class="lbl">Duration</label><input class="inp" id="ce-dur" value="'+co.du+'"></div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="saveCourseEdit('+cid+')">Save Changes</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function saveCourseEdit(cid){var co=C.find(function(x){return x.id===cid});if(!co)return;co.t=($('ce-title')||{}).value||co.t;co.d=($('ce-desc')||{}).value||co.d;co.p=parseInt(($('ce-price')||{}).value)||co.p;co.pd=co.p===0?'Free':'$'+co.p;co.du=($('ce-dur')||{}).value||co.du;closeModal();renderTeach();toast('Course updated!')}
+function showLessonManager(cid){var co=C.find(function(x){return x.id===cid});if(!co)return;var h='<h2>Manage Lessons — '+co.t+'</h2>';co.m.forEach(function(mod,mi){h+='<div class="h3">Module '+(mi+1)+': '+mod.n+'</div>';mod.l.forEach(function(les,li){h+='<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.03)"><span style="color:var(--t3);font-size:12px">'+(mi+1)+'.'+(li+1)+'</span><span style="flex:1;font-size:14px">'+les.n+'</span><span style="font-size:12px;color:var(--t3)">'+(les.v?'🎥 Video':'📄 Text')+'</span></div>'})});h+='<div style="margin-top:16px"><button class="btn btn-o" onclick="closeModal()">Close</button></div>';showModal(h)}
+function showCourseAnalytics(cid){var co=C.find(function(x){return x.id===cid});if(!co)return;var enrolled=S.tStudents.filter(function(s){return s.enrolled.includes(cid)}).length;showModal('<h2>Analytics — '+co.t+'</h2><div class="g3" style="margin-bottom:16px"><div class="card stat" style="padding:14px"><div class="sv2" style="font-size:24px">'+enrolled+'</div><div class="sl2">Enrolled</div></div><div class="card stat" style="padding:14px"><div class="sv2" style="font-size:24px">'+Math.round(65+Math.random()*25)+'%</div><div class="sl2">Completion</div></div><div class="card stat" style="padding:14px"><div class="sv2" style="font-size:24px">'+Math.round(70+Math.random()*20)+'%</div><div class="sl2">Avg Quiz</div></div></div><button class="btn btn-o" onclick="closeModal()">Close</button>')}
+function showVideoManager(cid){var co=C.find(function(x){return x.id===cid});if(!co)return;var ci=C.indexOf(co);var h='<h2>Video Manager — '+co.t+'</h2><p style="color:var(--t2);font-size:13px;margin-bottom:16px">Paste YouTube video IDs. They embed automatically in the lesson player.</p>';co.m.forEach(function(mod,mi){mod.l.forEach(function(les,li){h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.03)"><span style="flex:1;font-size:13px">'+mod.n+' → '+les.n+'</span><input class="inp" style="width:180px;padding:6px 10px;font-size:12px" value="'+(les.v||'')+'" placeholder="YouTube ID" onchange="C['+ci+'].m['+mi+'].l['+li+'].v=this.value">'+(les.v?'<span style="color:var(--gn);font-size:12px">✅</span>':'<span style="color:var(--t3);font-size:12px">—</span>')+'</div>'})});h+='<div style="margin-top:16px;display:flex;gap:8px"><button class="btn btn-g" onclick="toast(\'Videos saved!\');closeModal()">Save All</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>';showModal(h)}
+
+// Course Builder helpers
+var builderModCount=0;
+function addBuilderModule(){builderModCount++;var el=$('cb-modules');if(!el)return;var div=document.createElement('div');div.className='card';div.style.marginBottom='12px';div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><input class="inp" placeholder="Module name..." style="flex:1;margin-right:10px" id="cbm-n-'+builderModCount+'"><button class="btn btn-ghost btn-s" style="color:var(--r)" onclick="this.parentElement.parentElement.remove()">Remove</button></div><div id="cbm-l-'+builderModCount+'"></div><button class="btn btn-ghost btn-s" onclick="addBuilderLesson('+builderModCount+')">+ Add Lesson</button>';el.appendChild(div);addBuilderLesson(builderModCount)}
+var builderLesCount=0;
+function addBuilderLesson(modId){builderLesCount++;var el=$('cbm-l-'+modId);if(!el)return;var div=document.createElement('div');div.style.cssText='margin-bottom:10px;padding:10px;background:var(--bg3);border-radius:8px';div.innerHTML='<div class="row" style="margin-bottom:8px"><div class="field" style="margin:0"><input class="inp" placeholder="Lesson title" style="padding:8px 12px;font-size:13px"></div><div class="field" style="margin:0"><input class="inp" placeholder="YouTube ID (optional)" style="padding:8px 12px;font-size:13px"></div></div><textarea class="ta" placeholder="Lesson content (HTML supported)..." style="min-height:60px;font-size:13px"></textarea>';el.appendChild(div)}
+function saveCourseBuilder(){var title=($('cb-title')||{}).value;if(!title){toast('Enter course title');return}toast('✅ Course "'+title+'" created!');tCurTab='mycourses';renderTeach()}
+
+// Quiz Editor helpers
+function showAddQuestion(){showModal('<h2>Add Question</h2><div class="field"><label class="lbl">Course</label><select class="inp" id="aq-course">'+C.map(function(c){return '<option value="'+c.id+'">'+c.t+'</option>'}).join('')+'</select></div><div class="field"><label class="lbl">Question</label><textarea class="ta" id="aq-q" placeholder="Enter question..."></textarea></div><div class="field"><label class="lbl">Option A</label><input class="inp" id="aq-a" placeholder="Option A"></div><div class="field"><label class="lbl">Option B</label><input class="inp" id="aq-b" placeholder="Option B"></div><div class="field"><label class="lbl">Option C</label><input class="inp" id="aq-c" placeholder="Option C"></div><div class="field"><label class="lbl">Option D</label><input class="inp" id="aq-d" placeholder="Option D"></div><div class="row"><div class="field"><label class="lbl">Correct</label><select class="inp" id="aq-correct"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div><div class="field"><label class="lbl">Explanation</label><input class="inp" id="aq-expl" placeholder="Why this is correct..."></div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="addQuestion()">Add Question</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function addQuestion(){var q=($('aq-q')||{}).value;if(!q){toast('Enter question');return}teacherQuizzes.push({ci:parseInt(($('aq-course')||{}).value),q:q,o:[($('aq-a')||{}).value,($('aq-b')||{}).value,($('aq-c')||{}).value,($('aq-d')||{}).value],a:parseInt(($('aq-correct')||{}).value),e:($('aq-expl')||{}).value});closeModal();renderTeach();toast('Question added!')}
+function showEditQuestion(i){var q=teacherQuizzes[i];if(!q)return;showModal('<h2>Edit Question</h2><div class="field"><label class="lbl">Question</label><textarea class="ta" id="eq-q">'+q.q+'</textarea></div><div class="field"><label class="lbl">Option A</label><input class="inp" id="eq-a" value="'+q.o[0]+'"></div><div class="field"><label class="lbl">Option B</label><input class="inp" id="eq-b" value="'+q.o[1]+'"></div><div class="field"><label class="lbl">Option C</label><input class="inp" id="eq-c" value="'+q.o[2]+'"></div><div class="field"><label class="lbl">Option D</label><input class="inp" id="eq-d" value="'+q.o[3]+'"></div><div class="row"><div class="field"><label class="lbl">Correct</label><select class="inp" id="eq-correct"><option value="0" '+(q.a===0?'selected':'')+'>A</option><option value="1" '+(q.a===1?'selected':'')+'>B</option><option value="2" '+(q.a===2?'selected':'')+'>C</option><option value="3" '+(q.a===3?'selected':'')+'>D</option></select></div><div class="field"><label class="lbl">Explanation</label><input class="inp" id="eq-expl" value="'+q.e+'"></div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="saveEditQuestion('+i+')">Save</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function saveEditQuestion(i){teacherQuizzes[i].q=($('eq-q')||{}).value;teacherQuizzes[i].o=[($('eq-a')||{}).value,($('eq-b')||{}).value,($('eq-c')||{}).value,($('eq-d')||{}).value];teacherQuizzes[i].a=parseInt(($('eq-correct')||{}).value);teacherQuizzes[i].e=($('eq-expl')||{}).value;closeModal();renderTeach();toast('Question updated!')}
+function deleteQuestion(i){if(confirm('Delete this question?')){teacherQuizzes.splice(i,1);renderTeach();toast('Question deleted')}}
+function filterQuiz(cid){var body=$('quiz-body');if(!body)return;var qs=cid===0?teacherQuizzes:teacherQuizzes.filter(function(q){return q.ci===cid});body.innerHTML=qs.map(function(q){var co=C.find(function(x){return x.id===q.ci});var realIdx=teacherQuizzes.indexOf(q);return '<tr><td>'+(co?co.ic:'')+'</td><td style="max-width:400px">'+q.q+'</td><td style="color:var(--gn)">'+q.o[q.a]+'</td><td><button class="btn btn-o btn-s" onclick="showEditQuestion('+realIdx+')">✏️</button> <button class="btn btn-ghost btn-s" style="color:var(--r)" onclick="deleteQuestion('+realIdx+')">🗑️</button></td></tr>'}).join('')}
+function showTastingReview(student,wine){showModal('<h2>Tasting Note Review</h2><div class="lbl">Student</div><p style="margin-bottom:12px">'+student+'</p><div class="lbl">Wine</div><p style="margin-bottom:12px">'+wine+'</p><div class="field"><label class="lbl">Teacher Feedback</label><textarea class="ta" placeholder="Provide SAT-structured feedback..."></textarea></div><div class="row"><div class="field"><label class="lbl">Grade</label><select class="inp"><option>Pass</option><option>Merit</option><option>Distinction</option><option>Needs Improvement</option></select></div><div class="field"><label class="lbl">Status</label><select class="inp"><option>Reviewed</option><option>Pending</option></select></div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="toast(\'Review saved!\');closeModal()">Save Review</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+
+// ═══════════════════════════════════════════
+// ADMIN PANEL
+// ═══════════════════════════════════════════
+
+var aCurTab='analytics';var chartsInit=false;
+function aTab(tab,el){aCurTab=tab;el.parentElement.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});el.classList.add('on');chartsInit=false;renderAdmin()}
+
+function renderAdmin(){
+  var ac=$('ac');if(!ac)return;
+
+  if(aCurTab==='analytics'){
+    ac.innerHTML='<div class="g4" style="margin-bottom:24px"><div class="card stat"><div class="sv2">247</div><div class="sl2">Total Learners</div></div><div class="card stat"><div class="sv2">$48.2K</div><div class="sl2">Revenue YTD</div></div><div class="card stat"><div class="sv2">1,847</div><div class="sl2">Lessons Completed</div></div><div class="card stat"><div class="sv2">72%</div><div class="sl2">Avg Completion</div></div></div>'+
+      '<div class="card" style="margin-bottom:20px"><div class="h3" style="margin-top:0">Enrollment Trends</div><div class="cht"><canvas id="ach1"></canvas></div></div>'+
+      '<div class="g2"><div class="card"><div class="h3" style="margin-top:0">Revenue by Month</div><div class="cht"><canvas id="ach2"></canvas></div></div><div class="card"><div class="h3" style="margin-top:0">Course Popularity</div><div class="cht"><canvas id="ach3"></canvas></div></div></div>';
+    setTimeout(initCharts,300);
+
+  } else if(aCurTab==='users'){
+    var h='<div style="display:flex;justify-content:space-between;margin-bottom:16px"><input class="inp" placeholder="Search users..." style="width:300px" oninput="filterAdminUsers(this.value)"><div style="display:flex;gap:8px"><button class="btn btn-g" onclick="showAddUser()">+ Add User</button><button class="btn btn-o" onclick="toast(\'Exporting CSV...\')">📥 Export</button></div></div>';
+    h+='<div class="card" style="overflow-x:auto"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>WSET</th><th>Courses</th><th>Points</th><th>Status</th><th>Actions</th></tr></thead><tbody id="ausers-body">';
+    S.tStudents.forEach(function(s){h+=adminUserRow(s)});
+    h+='</tbody></table></div>';ac.innerHTML=h;
+
+  } else if(aCurTab==='courses'){
+    var h='<div style="display:flex;justify-content:space-between;margin-bottom:16px"><div class="h3" style="margin:0">All Courses ('+C.length+')</div><button class="btn btn-g" onclick="tCurTab=\'builder\';go(\'teach\')">+ Create Course</button></div>';
+    h+='<div class="card" style="overflow-x:auto"><table class="tbl"><thead><tr><th>Course</th><th>Price</th><th>Level</th><th>Modules</th><th>Lessons</th><th>Enrolled</th><th>Est. Revenue</th><th>Actions</th></tr></thead><tbody>';
+    C.forEach(function(co){var totalL=co.m.reduce(function(s,m){return s+m.l.length},0);var rev=co.p*co.st;
+      h+='<tr><td style="font-weight:600">'+co.ic+' '+co.t+'</td><td>'+co.pd+'</td><td><span class="lvl lvl-'+co.lv[0]+'">'+co.lv+'</span></td><td>'+co.m.length+'</td><td>'+totalL+'</td><td>'+co.st.toLocaleString()+'</td><td style="color:var(--g)">A$'+rev.toLocaleString()+'</td><td><button class="btn btn-o btn-s" onclick="showCourseEditor('+co.id+')">✏️ Edit</button></td></tr>'});
+    h+='</tbody></table></div>';ac.innerHTML=h;
+
+  } else if(aCurTab==='promos'){
+    var h='<div style="display:flex;justify-content:space-between;margin-bottom:16px"><div class="h3" style="margin:0">Promotion Codes ('+S.aPromos.length+')</div><button class="btn btn-g" onclick="showAddPromo()">+ New Promotion</button></div>';
+    h+='<div class="card" style="overflow-x:auto"><table class="tbl"><thead><tr><th>Code</th><th>Discount</th><th>Uses</th><th>Max</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+    S.aPromos.forEach(function(p,i){h+='<tr><td style="font-weight:600;font-family:monospace;color:var(--g)">'+p.code+'</td><td>'+p.disc+'%</td><td>'+p.uses+'</td><td>'+p.maxUses+'</td><td style="color:var(--t3)">'+p.exp+'</td><td><span class="sts '+(p.status==='Active'?'sts-ok':p.status==='Expired'?'sts-r':'sts-w')+'">'+p.status+'</span></td><td><button class="btn btn-o btn-s" onclick="showEditPromo('+i+')">✏️</button> <button class="btn btn-ghost btn-s" style="color:var(--r)" onclick="deletePromo('+i+')">🗑️</button></td></tr>'});
+    h+='</tbody></table></div>';ac.innerHTML=h;
+
+  } else if(aCurTab==='events'){
+    var h='<div style="display:flex;justify-content:space-between;margin-bottom:16px"><div class="h3" style="margin:0">Events ('+S.aEvents.length+')</div><button class="btn btn-g" onclick="showAddEvent()">+ New Event</button></div>';
+    h+='<div class="card" style="overflow-x:auto"><table class="tbl"><thead><tr><th>Date</th><th>Event</th><th>Type</th><th>Location</th><th>Actions</th></tr></thead><tbody>';
+    S.aEvents.sort(function(a,b){return a.dt.localeCompare(b.dt)}).forEach(function(e,i){var emoji={exam:'📝',masterclass:'🎓',tasting:'🍷',workshop:'📚'}[e.ty]||'📅';
+      h+='<tr><td style="color:var(--g)">'+e.dt+'</td><td style="font-weight:600">'+emoji+' '+e.t+'</td><td>'+e.ty+'</td><td style="color:var(--t3)">'+e.l+'</td><td><button class="btn btn-o btn-s" onclick="showEditEvent('+i+')">✏️</button> <button class="btn btn-ghost btn-s" style="color:var(--r)" onclick="deleteEvent('+i+')">🗑️</button></td></tr>'});
+    h+='</tbody></table></div>';ac.innerHTML=h;
+
+  } else if(aCurTab==='settings'){
+    ac.innerHTML='<div class="g2"><div class="card"><div class="h3" style="margin-top:0">Platform Settings</div><div class="field"><label class="lbl">Site Name</label><input class="inp" value="Joval School of Wine"></div><div class="field"><label class="lbl">Contact Email</label><input class="inp" value="jsow@joval.com.au"></div><div class="field"><label class="lbl">Currency</label><select class="inp"><option selected>AUD (A$)</option><option>USD ($)</option><option>EUR (€)</option><option>GBP (£)</option></select></div><div class="field"><label class="lbl">GST Rate (%)</label><input class="inp" type="number" value="10"></div><div class="field"><label class="lbl">Enrolment Mode</label><select class="inp"><option selected>Open</option><option>Approval Required</option><option>Invitation Only</option></select></div><div class="field"><label class="lbl">Pass Mark (%)</label><input class="inp" type="number" value="55"></div><button class="btn btn-g" onclick="toast(\'Settings saved!\')">Save Settings</button></div>'+
+    '<div class="card"><div class="h3" style="margin-top:0">Email & Notifications</div><div class="field"><label class="lbl">SMTP Host</label><input class="inp" value="smtp.joval.com.au"></div><div class="field"><label class="lbl">SMTP Port</label><input class="inp" value="587"></div><div class="field"><label class="lbl">Welcome Email</label><select class="inp"><option selected>Enabled</option><option>Disabled</option></select></div><div class="field"><label class="lbl">Certificate Email</label><select class="inp"><option selected>Enabled</option><option>Disabled</option></select></div><div class="field"><label class="lbl">Quiz Result Email</label><select class="inp"><option selected>Enabled</option><option>Disabled</option></select></div><button class="btn btn-g" onclick="toast(\'Email settings saved!\')">Save Email Settings</button></div></div>'+
+    '<div class="card" style="margin-top:20px;border-color:rgba(198,40,40,.15)"><div class="h3" style="margin-top:0;color:var(--r)">Danger Zone</div><p style="font-size:13px;color:var(--t3);margin-bottom:12px">These actions are irreversible.</p><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-d btn-s" onclick="if(confirm(\'Reset ALL progress?\')){localStorage.removeItem(\'jsow3\');location.reload()}">Reset All Progress</button><button class="btn btn-o btn-s" onclick="toast(\'Exporting JSON...\')">📥 Export Data</button><button class="btn btn-o btn-s" onclick="toast(\'Backup created!\')">💾 Backup</button></div></div>';
+  }
+}
+
+// Admin helpers
+function adminUserRow(s){return '<tr><td style="font-weight:600">'+s.name+'</td><td style="color:var(--t3);font-size:12px">'+s.email+'</td><td>Student</td><td>'+s.wset+'</td><td>'+s.enrolled.length+'</td><td style="color:var(--g)">'+s.points.toLocaleString()+'</td><td><span class="sts '+(s.status==='active'?'sts-ok':'sts-w')+'">'+s.status+'</span></td><td><button class="btn btn-o btn-s" onclick="showStudentDetail('+s.id+')">View</button> <button class="btn btn-ghost btn-s" style="color:var(--r)" onclick="toggleStudentStatus('+s.id+');renderAdmin()">Toggle</button></td></tr>'}
+function filterAdminUsers(q){q=q.toLowerCase();var body=$('ausers-body');if(!body)return;body.innerHTML=(q?S.tStudents.filter(function(s){return s.name.toLowerCase().includes(q)||s.email.toLowerCase().includes(q)}):S.tStudents).map(function(s){return adminUserRow(s)}).join('')}
+function showAddUser(){showModal('<h2>Add User</h2><div class="row"><div class="field"><label class="lbl">Full Name</label><input class="inp" id="au-name"></div><div class="field"><label class="lbl">Email</label><input class="inp" id="au-email"></div></div><div class="row"><div class="field"><label class="lbl">Role</label><select class="inp"><option>Student</option><option>Teacher</option><option>Admin</option></select></div><div class="field"><label class="lbl">WSET Level</label><select class="inp" id="au-wset"><option>None</option><option>Level 1</option><option>Level 2</option><option>Level 3</option></select></div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="addAdminUser()">Add User</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function addAdminUser(){var name=($('au-name')||{}).value;var email=($('au-email')||{}).value;if(!name||!email){toast('Fill in all fields');return}S.tStudents.push({id:Date.now(),name:name,email:email,enrolled:[],lessons:0,points:0,lastActive:new Date().toISOString().split('T')[0],status:'active',wset:($('au-wset')||{}).value,notes:0,quizAvg:0});saveState();closeModal();renderAdmin();toast('User added: '+name)}
+function showAddPromo(){showModal('<h2>New Promotion</h2><div class="row"><div class="field"><label class="lbl">Code</label><input class="inp" id="ap-code" placeholder="e.g. SUMMER25" style="text-transform:uppercase"></div><div class="field"><label class="lbl">Discount %</label><input class="inp" id="ap-disc" type="number" min="1" max="100" placeholder="10"></div></div><div class="row"><div class="field"><label class="lbl">Max Uses</label><input class="inp" id="ap-max" type="number" placeholder="100"></div><div class="field"><label class="lbl">Expiry Date</label><input class="inp" id="ap-exp" type="date"></div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="addPromo()">Create</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function addPromo(){var code=($('ap-code')||{}).value.toUpperCase();if(!code){toast('Enter promo code');return}S.aPromos.push({id:Date.now(),code:code,disc:parseInt(($('ap-disc')||{}).value)||10,uses:0,maxUses:parseInt(($('ap-max')||{}).value)||100,exp:($('ap-exp')||{}).value||'2026-12-31',status:'Active'});saveState();closeModal();renderAdmin();toast('Promo created: '+code)}
+function showEditPromo(i){var p=S.aPromos[i];if(!p)return;showModal('<h2>Edit Promotion</h2><div class="row"><div class="field"><label class="lbl">Code</label><input class="inp" id="ep-code" value="'+p.code+'"></div><div class="field"><label class="lbl">Discount %</label><input class="inp" id="ep-disc" type="number" value="'+p.disc+'"></div></div><div class="row"><div class="field"><label class="lbl">Max Uses</label><input class="inp" id="ep-max" type="number" value="'+p.maxUses+'"></div><div class="field"><label class="lbl">Expiry</label><input class="inp" id="ep-exp" type="date" value="'+p.exp+'"></div></div><div class="field"><label class="lbl">Status</label><select class="inp" id="ep-status"><option '+(p.status==='Active'?'selected':'')+'>Active</option><option '+(p.status==='Paused'?'selected':'')+'>Paused</option><option '+(p.status==='Expired'?'selected':'')+'>Expired</option></select></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="saveEditPromo('+i+')">Save</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function saveEditPromo(i){S.aPromos[i].code=($('ep-code')||{}).value.toUpperCase();S.aPromos[i].disc=parseInt(($('ep-disc')||{}).value);S.aPromos[i].maxUses=parseInt(($('ep-max')||{}).value);S.aPromos[i].exp=($('ep-exp')||{}).value;S.aPromos[i].status=($('ep-status')||{}).value;saveState();closeModal();renderAdmin();toast('Promo updated!')}
+function deletePromo(i){if(confirm('Delete this promo?')){S.aPromos.splice(i,1);saveState();renderAdmin();toast('Promo deleted')}}
+function showAddEvent(){showModal('<h2>New Event</h2><div class="field"><label class="lbl">Title</label><input class="inp" id="ae-title" placeholder="e.g. WSET Level 2 Classroom"></div><div class="row"><div class="field"><label class="lbl">Date</label><input class="inp" id="ae-date" type="date"></div><div class="field"><label class="lbl">Type</label><select class="inp" id="ae-type"><option value="exam">Exam</option><option value="masterclass">Masterclass</option><option value="tasting">Tasting</option><option value="workshop">Workshop</option></select></div></div><div class="field"><label class="lbl">Description</label><textarea class="ta" id="ae-desc" placeholder="Event details..."></textarea></div><div class="field"><label class="lbl">Location</label><input class="inp" id="ae-loc" placeholder="Joval Melbourne, Abbotsford"></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="addEvent()">Create Event</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function addEvent(){var title=($('ae-title')||{}).value;if(!title){toast('Enter event title');return}S.aEvents.push({dt:($('ae-date')||{}).value,t:title,ty:($('ae-type')||{}).value,d:($('ae-desc')||{}).value,l:($('ae-loc')||{}).value||'Joval Melbourne'});saveState();closeModal();renderAdmin();toast('Event created!')}
+function showEditEvent(i){var e=S.aEvents[i];if(!e)return;showModal('<h2>Edit Event</h2><div class="field"><label class="lbl">Title</label><input class="inp" id="ee-title" value="'+e.t+'"></div><div class="row"><div class="field"><label class="lbl">Date</label><input class="inp" id="ee-date" type="date" value="'+e.dt+'"></div><div class="field"><label class="lbl">Type</label><select class="inp" id="ee-type"><option value="exam" '+(e.ty==='exam'?'selected':'')+'>Exam</option><option value="masterclass" '+(e.ty==='masterclass'?'selected':'')+'>Masterclass</option><option value="tasting" '+(e.ty==='tasting'?'selected':'')+'>Tasting</option><option value="workshop" '+(e.ty==='workshop'?'selected':'')+'>Workshop</option></select></div></div><div class="field"><label class="lbl">Description</label><textarea class="ta" id="ee-desc">'+e.d+'</textarea></div><div class="field"><label class="lbl">Location</label><input class="inp" id="ee-loc" value="'+e.l+'"></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-g" onclick="saveEditEvent('+i+')">Save</button><button class="btn btn-o" onclick="closeModal()">Cancel</button></div>')}
+function saveEditEvent(i){S.aEvents[i].t=($('ee-title')||{}).value;S.aEvents[i].dt=($('ee-date')||{}).value;S.aEvents[i].ty=($('ee-type')||{}).value;S.aEvents[i].d=($('ee-desc')||{}).value;S.aEvents[i].l=($('ee-loc')||{}).value;saveState();closeModal();renderAdmin();toast('Event updated!')}
+function deleteEvent(i){if(confirm('Delete this event?')){S.aEvents.splice(i,1);saveState();renderAdmin();toast('Event deleted')}}
+
+// Admin Charts
+function initCharts(){
+  if(chartsInit)return;chartsInit=true;
+  try{
+    var g='#C9A84C',gl='#e2c97e',r='#9B2335',gn='#388E3C',bl='#42A5F5';
+    var mo=['Jan','Feb','Mar','Apr','May','Jun'];
+    var c1=$('ach1'),c2=$('ach2'),c3=$('ach3');
+    if(c1)new Chart(c1,{type:'line',data:{labels:mo,datasets:[{label:'Enrollments',data:[42,58,65,78,92,112],borderColor:g,backgroundColor:'rgba(201,168,76,.06)',fill:true,tension:.4,pointBackgroundColor:g,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#999'}}},scales:{x:{ticks:{color:'#666'},grid:{color:'rgba(255,255,255,.03)'}},y:{ticks:{color:'#666'},grid:{color:'rgba(255,255,255,.03)'}}}}});
+    if(c2)new Chart(c2,{type:'bar',data:{labels:mo,datasets:[{label:'Revenue (A$)',data:[12400,18200,16800,22100,28900,29050],backgroundColor:g,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#999'}}},scales:{x:{ticks:{color:'#666'},grid:{color:'rgba(255,255,255,.03)'}},y:{ticks:{color:'#666'},grid:{color:'rgba(255,255,255,.03)'}}}}});
+    if(c3)new Chart(c3,{type:'doughnut',data:{labels:C.map(function(c){return c.t.split(' ').slice(0,3).join(' ')}),datasets:[{data:C.map(function(c){return c.st}),backgroundColor:[r,g,bl,gn,'#E57373','#81C784','#FFB74D'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#999',font:{size:10}}}}}});
+  }catch(e){console.log('Charts:',e)}
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+function init(){
+  loadState();
+  updCC();
+  if(S.user&&S.role){
+    var user=USERS.find(function(u){return u.email===S.user.email});
+    if(user){showApp(user);return}
+  }
+  $('login').style.display='flex';
+}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
